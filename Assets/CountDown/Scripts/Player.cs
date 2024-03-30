@@ -238,12 +238,14 @@ namespace CountDown
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            intersectingObjects.Add(other);
+            if (!intersectingObjects.Contains(other))
+                intersectingObjects.Add(other);
         }
         
         private void OnTriggerExit2D(Collider2D other)
         {
-            intersectingObjects.Remove(other);
+            if (intersectingObjects.Contains(other))
+                intersectingObjects.Remove(other);
         }
     }
 }
