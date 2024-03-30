@@ -20,6 +20,7 @@ namespace CountDown
         [Header("Attack")]
         [SerializeField] private float attackForce = 100;
         [SerializeField] private float inputLockInSeconds = 1;
+        [SerializeField] private float attackCooldownInSeconds = 5;
         
         [Header("References")]
         [SerializeField] private PlayerFightTrigger fightTrigger;
@@ -29,8 +30,12 @@ namespace CountDown
         [SerializeField, ReadOnlyInspector] private Item item;
         
         private readonly List<Collider2D> intersectingObjects = new ();
+        
         private bool inputLocked;
         private Coroutine inputLockCoroutine;
+
+        private bool attackCooldown;
+        private Coroutine attackCooldownCoroutine;
         
         [Header("Events")]
         public UnityEvent<Item> PickUpItemEvent;
@@ -187,18 +192,34 @@ namespace CountDown
 
         private bool CheckAttack()
         {
-            if (fightTrigger.OtherEntered)
+            if (!attackCooldown && fightTrigger.OtherEntered)
             {
                 var otherPlayer = GameRoot.Instance.GetOtherPlayer(this);
                 var directionVec = (otherPlayer.transform.position - transform.position).normalized;
                 otherPlayer.additionalVelocity = directionVec * attackForce;
                 otherPlayer.LockInput(inputLockInSeconds);
+                CooldownAttack(attackCooldownInSeconds);
                 return true;
             }
 
             return false;
         }
 
+        // дублирование кода?
+        private void CooldownAttack(float timeInSeconds)
+        {
+            if (attackCooldownCoroutine != null)
+                StopCoroutine(attackCooldownCoroutine);
+            
+            attackCooldownCoroutine = StartCoroutine(CooldownACoroutine());
+            IEnumerator CooldownACoroutine()
+            {
+                attackCooldown = true;
+                yield return new WaitForSeconds(timeInSeconds);
+                attackCooldown = false;
+                attackCooldownCoroutine = null;
+            }
+        }
 
         private void LockInput(float timeInSeconds)
         {
