@@ -11,6 +11,7 @@ namespace CountDown
         [SerializeField, NamedArray("EventName")] private GameEvent[] events;
 
         private List<GameEvent> gameEvents;
+        private bool paused;
         
         public void StartGame()
         {
@@ -18,8 +19,16 @@ namespace CountDown
             CheckTime();
         }
 
+        public void PauseGame(bool value)
+        {
+            paused = value;
+        }
+
         private void FixedUpdate()
         {
+            if (paused)
+                return;
+            
             UpdateTime();
             CheckTime();
         }

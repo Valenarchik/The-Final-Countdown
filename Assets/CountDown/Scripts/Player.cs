@@ -10,6 +10,7 @@ namespace CountDown
     {
         [SerializeField] private string inputId;
         [SerializeField] private float speed = 20;
+        [SerializeField, Range(0,1)] private float speedOnPickItemMultiplayer = 0.8f;
         [SerializeField] private KeyCode interactionKey;
         
         [SerializeField, ReadOnlyInspector] private int score;
@@ -67,14 +68,15 @@ namespace CountDown
 
         private void DropItem()
         {
-            item.gameObject.SetActive(true);
             var dropItem = item;
             item = null;
 
             dropItem.transform.SetParent(null);
             dropItem.ItemState = ItemState.OnGround;
-            DropItemEvent?.Invoke(dropItem);
             
+            speed /= speedOnPickItemMultiplayer;
+            
+            DropItemEvent?.Invoke(dropItem);
         }
 
         private void DropItemInRocket(Rocket rocket)
@@ -82,6 +84,9 @@ namespace CountDown
             rocket.PlaceItem(this, item);
             var boofer = item;
             item = null;
+            
+            speed /= speedOnPickItemMultiplayer;
+            
             PlacedToRocketEvent.Invoke(boofer);
         }
 
@@ -98,8 +103,10 @@ namespace CountDown
             item.transform.SetParent(transform);
             item.transform.localPosition = Vector3.zero;
             item.ItemState = ItemState.OnPlayer;
-            item.gameObject.SetActive(false);
             intersectingObjects.Remove(item.GetComponent<Collider2D>());
+
+            speed *= speedOnPickItemMultiplayer;
+            
             PickUpItemEvent?.Invoke(item);
         }
 
