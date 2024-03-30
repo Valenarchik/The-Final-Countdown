@@ -2,6 +2,10 @@
 {
     public enum RocketPartType
     {
-        Engine
+        Battery,
+        Wires,
+        Frame,
+        Sheathing,
+        Capsule
     }
 }

@@ -48,6 +48,8 @@ namespace CountDown
         private void Awake()
         {
             costText.text = cost.ToString();
+            if(cost == 0)
+                costText.gameObject.SetActive(false);
         }
 
         protected virtual void Start()
