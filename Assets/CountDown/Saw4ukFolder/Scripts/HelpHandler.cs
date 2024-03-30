@@ -35,11 +35,6 @@ public class HelpHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Debug.Log(player.IntersectingObjects.Count);
-        for (int i = 0; i < 3; i++)
-        {
-            var x = GetComponent<Player>();
-        }
         if (player.IntersectingObjects.Count == 0)
         {
             if (player.CanDropItem && helpPanel.CurrentState != HelpPanelState.DemonstratingDrop)

@@ -24,6 +24,8 @@ namespace CountDown
         
         public bool CanDropItem => item != null;
         public bool CanPickUpItem => item == null;
+
+        public bool IsMoving => horizontalInput > 0.05f || verticalInput > 0.05f;
         public Item Item => item;
 
         public int Score
