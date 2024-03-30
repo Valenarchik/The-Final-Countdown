@@ -52,6 +52,8 @@ namespace CountDown
         {
             costText.text = cost.ToString();
             rb2D = GetComponent<Rigidbody2D>();
+            if(cost == 0)
+                costText.gameObject.SetActive(false);
         }
 
         protected virtual void Start()
