@@ -57,6 +57,8 @@ namespace CountDown
 
         private void SpawnDetail(GameObject detailPrefab)
         {
+            if(detailSpawnPoints.Count == 0)
+                return;
             for (var i = 0; i < detailsCopiesCount; i++)
             {
                 var detailSP = GetRandomSpawnPoint(detailSpawnPoints);
@@ -67,12 +69,16 @@ namespace CountDown
 
         public void SpawnCapsule()
         {
+            if(capsuleSpawnPoints.Count == 0)
+                return;
             var capsuleSP = GetRandomSpawnPoint(capsuleSpawnPoints);
             SpawnItem(capsulePrefab, capsuleSP.position);
         }
 
         private Transform GetRandomSpawnPoint(List<Transform> pool)
         {
+            if (pool.Count == 0)
+                return null;
             return pool[Random.Range(0, pool.Count)];
         }
 

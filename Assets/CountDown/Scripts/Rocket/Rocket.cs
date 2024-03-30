@@ -33,7 +33,6 @@ namespace CountDown
         {
             if (item is Resource resource)
             {
-                player.Score++;
                 Destroy(item.gameObject);
                 return;
             }
