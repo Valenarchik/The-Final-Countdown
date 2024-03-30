@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,12 +9,15 @@ namespace CountDown
     public class Player: MonoBehaviour
     {
         [SerializeField] private Item item;
-        public Item Item => item;
+        private List<Collider> intersectingObjects;
 
         public UnityEvent<Item> PickUpItemEvent;
-        public UnityEvent<Item> DropItemEvent; 
+        public UnityEvent<Item> DropItemEvent;
+        
         public bool CanDropItem => item != null;
         public bool CanPickUpItem => item == null;
+        public Item Item => item;
+        public IReadOnlyCollection<Collider> IntersectingObjects => intersectingObjects;
 
         public Item DropItem()
         {
@@ -35,6 +40,33 @@ namespace CountDown
             
             this.item = item;
             PickUpItemEvent?.Invoke(item);
+        }
+
+        public void CheckIntersections()
+        {
+            if (CanPickUpItem)
+            {
+                foreach (var other in intersectingObjects
+                             .OrderBy(c => (transform.position - c.transform.position).magnitude))
+                {
+                    var pickUpItem = other.GetComponent<Item>();
+                    if (pickUpItem != null)
+                    {
+                        PickUpItem(pickUpItem);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        private void OnTriggerEnter(Collider other)
+        {
+            intersectingObjects.Add(other);
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            intersectingObjects.Remove(other);
         }
     }
 }

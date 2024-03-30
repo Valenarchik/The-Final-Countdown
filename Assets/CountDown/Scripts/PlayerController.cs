@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CountDown
@@ -15,7 +17,9 @@ namespace CountDown
         
         private float horizontalInput;
         private float verticalInput;
-        
+
+        public KeyCode InteractionKey => interactionKey;
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -33,6 +37,11 @@ namespace CountDown
             
             transform.Translate(Vector2.up * speed * verticalInput * Time.deltaTime);
             transform.Translate(Vector2.right * speed * horizontalInput * Time.deltaTime);
+
+            if (Input.GetKeyDown(interactionKey))
+            {
+               player.CheckIntersections();
+            }
         }
     }
 
