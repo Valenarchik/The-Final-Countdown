@@ -10,6 +10,7 @@ namespace CountDown
     {
         [SerializeField] private string inputId;
         [SerializeField] private float speed = 20;
+        [SerializeField, Range(0,1)] private float speedOnPickItemMultiplayer = 0.8f;
         [SerializeField] private KeyCode interactionKey;
         
         [SerializeField, ReadOnlyInspector] private int score;
@@ -19,6 +20,7 @@ namespace CountDown
         
         public UnityEvent<Item> PickUpItemEvent;
         public UnityEvent<Item> DropItemEvent;
+        public UnityEvent<Item> PlacedToRocketEvent;
         
         public bool CanDropItem => item != null;
         public bool CanPickUpItem => item == null;
@@ -50,7 +52,7 @@ namespace CountDown
             
             animator.SetFloat("Horizontal", horizontalInput);
             animator.SetFloat("Vertical", verticalInput);
-            animator.SetFloat("Speed",Mathf.Abs(verticalInput+horizontalInput));
+            animator.SetFloat("Speed",Mathf.Abs(verticalInput)+Mathf.Abs(horizontalInput));
             
             if (Input.GetKeyDown(interactionKey))
             {
@@ -71,13 +73,21 @@ namespace CountDown
 
             dropItem.transform.SetParent(null);
             dropItem.ItemState = ItemState.OnGround;
+            
+            speed /= speedOnPickItemMultiplayer;
+            
             DropItemEvent?.Invoke(dropItem);
         }
 
         private void DropItemInRocket(Rocket rocket)
         {
             rocket.PlaceItem(this, item);
+            var boofer = item;
             item = null;
+            
+            speed /= speedOnPickItemMultiplayer;
+            
+            PlacedToRocketEvent.Invoke(boofer);
         }
 
         public bool CanPickUpConcreteItem(Item item)
@@ -93,6 +103,10 @@ namespace CountDown
             item.transform.SetParent(transform);
             item.transform.localPosition = Vector3.zero;
             item.ItemState = ItemState.OnPlayer;
+            intersectingObjects.Remove(item.GetComponent<Collider2D>());
+
+            speed *= speedOnPickItemMultiplayer;
+            
             PickUpItemEvent?.Invoke(item);
         }
 

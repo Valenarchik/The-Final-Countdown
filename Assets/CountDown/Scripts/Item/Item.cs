@@ -30,10 +30,12 @@ namespace CountDown
                 case ItemState.OnGround:
                     onPlayerSpriteRenderer.enabled = false;
                     onGroundSpriteRenderer.enabled = true;
+                    gameObject.SetActive(true);
                     break;
                 case ItemState.OnPlayer:
                     onPlayerSpriteRenderer.enabled = true;
                     onGroundSpriteRenderer.enabled = false;
+                    gameObject.SetActive(false);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
