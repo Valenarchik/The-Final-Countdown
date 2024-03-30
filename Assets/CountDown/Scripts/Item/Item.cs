@@ -7,9 +7,4 @@ namespace CountDown
         [SerializeField] private string itemName;
         public string ItemName => itemName;
     }
-
-    public enum ItemType
-    {
-        
-    }
 }
