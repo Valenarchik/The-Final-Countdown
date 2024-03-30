@@ -8,6 +8,7 @@ namespace CountDown
 {
     public class Player: MonoBehaviour
     {
+        [SerializeField] private int score;
         [SerializeField] private Item item;
         private List<Collider> intersectingObjects;
 
@@ -17,33 +18,44 @@ namespace CountDown
         public bool CanDropItem => item != null;
         public bool CanPickUpItem => item == null;
         public Item Item => item;
-        public IReadOnlyCollection<Collider> IntersectingObjects => intersectingObjects;
 
-        public Item DropItem()
+        public int Score
         {
-            if (!CanDropItem)
-                return null;
-            
-            var dropItem = this.item;
-            item = null;
-            DropItemEvent?.Invoke(dropItem);
-            return dropItem;
+            get => score;
+            set => score = value;
         }
 
-        public void PickUpItem(Item item)
+        public IReadOnlyCollection<Collider> IntersectingObjects => intersectingObjects;
+
+        private void DropItem()
         {
-            if (item == null)
-                return;
+            var dropItem = item;
+            item = null;
             
-            if (!CanPickUpItem)
-                return;
+            transform.SetParent(null);
             
+            DropItemEvent?.Invoke(dropItem);
+        }
+
+        private void DropItemInRocket(Rocket rocket)
+        {
+            var dropItem = item;
+            item = null;
+            rocket.PlaceItem(item);
+            DropItemEvent?.Invoke(dropItem);
+        }
+
+        private void PickUpItem(Item item)
+        {
             this.item = item;
+            item.transform.SetParent(transform);
+            item.transform.localPosition = Vector3.zero;
             PickUpItemEvent?.Invoke(item);
         }
 
         public void CheckIntersections()
         {
+            Debug.Log("CheckIntersections");
             if (CanPickUpItem)
             {
                 foreach (var other in intersectingObjects
@@ -53,19 +65,37 @@ namespace CountDown
                     if (pickUpItem != null)
                     {
                         PickUpItem(pickUpItem);
-                        break;
+                        return;
                     }
+                }
+            }
+
+            if (CanDropItem)
+            {
+                var rocket = intersectingObjects
+                    .Select(x => x.GetComponent<Rocket>())
+                    .FirstOrDefault(x => x != null);
+
+                if (rocket != null && rocket.CanPlaceItem(item))
+                {
+                    DropItemInRocket(rocket);
+                }
+                else
+                {
+                    DropItem();
                 }
             }
         }
         
         private void OnTriggerEnter(Collider other)
         {
+            Debug.Log($"Trigger Enter {other.name}");
             intersectingObjects.Add(other);
         }
 
         private void OnTriggerExit(Collider other)
         {
+            Debug.Log($"Trigger Exit {other.name}");
             intersectingObjects.Remove(other);
         }
     }
