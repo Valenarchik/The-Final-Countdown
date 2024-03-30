@@ -109,11 +109,11 @@ namespace CountDown
             item.transform.localPosition = Vector3.zero;
             item.ItemState = ItemState.OnPlayer;
             intersectingObjects.Remove(item.GetComponent<Collider2D>());
-
             speed *= speedOnPickItemMultiplayer;
-            
             PickUpItemEvent?.Invoke(item);
+            animator.SetBool("HasBox", true);
         }
+        
 
         public void CheckIntersections()
         {
