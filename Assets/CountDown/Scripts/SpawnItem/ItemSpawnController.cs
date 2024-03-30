@@ -15,7 +15,7 @@ namespace CountDown
 
         [Space(10)] 
         [Header("Settings")]
-        [SerializeField] [Range(0,1f)] private int resourcesSpawnChance;
+        [SerializeField] [Range(0,1f)] private float resourcesSpawnChance;
         [SerializeField] private int detailsCopiesCount;
         
         [Space(10)]
