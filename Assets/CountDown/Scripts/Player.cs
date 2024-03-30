@@ -51,10 +51,10 @@ namespace CountDown
             animator.SetFloat("Horizontal", horizontalInput);
             animator.SetFloat("Vertical", verticalInput);
             animator.SetFloat("Speed",Mathf.Abs(verticalInput+horizontalInput));
+
+            var moveVector = new Vector2(horizontalInput, verticalInput);
             
-            
-            transform.Translate(Vector2.up * speed * verticalInput * Time.deltaTime);
-            transform.Translate(Vector2.right * speed * horizontalInput * Time.deltaTime);
+            transform.Translate(moveVector * speed * Time.deltaTime);
 
             if (Input.GetKeyDown(interactionKey))
             {
