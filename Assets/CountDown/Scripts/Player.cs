@@ -74,6 +74,7 @@ namespace CountDown
             dropItem.transform.SetParent(null);
             dropItem.ItemState = ItemState.OnGround;
             DropItemEvent?.Invoke(dropItem);
+            animator.SetBool("HasBox",false);
             
         }
 
@@ -83,6 +84,7 @@ namespace CountDown
             var boofer = item;
             item = null;
             PlacedToRocketEvent.Invoke(boofer);
+            animator.SetBool("HasBox",false);
         }
 
         public bool CanPickUpConcreteItem(Item item)
@@ -101,6 +103,7 @@ namespace CountDown
             item.gameObject.SetActive(false);
             intersectingObjects.Remove(item.GetComponent<Collider2D>());
             PickUpItemEvent?.Invoke(item);
+            animator.SetBool("HasBox",true);
         }
 
         public void CheckIntersections()
