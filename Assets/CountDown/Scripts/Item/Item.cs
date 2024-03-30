@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 
 namespace CountDown
@@ -7,11 +8,12 @@ namespace CountDown
     {
         [SerializeField] private SpriteRenderer onGroundSpriteRenderer;
         [SerializeField] private SpriteRenderer onPlayerSpriteRenderer;
-        
-        [SerializeField] private string itemName;
+
+        [SerializeField] private TMP_Text costText;
+        [SerializeField] private int cost;
         [SerializeField] private ItemState itemState;
         
-        public string ItemName => itemName;
+        public int Cost => cost;
 
         public ItemState ItemState
         {
@@ -40,6 +42,12 @@ namespace CountDown
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
+        }
+
+
+        private void Awake()
+        {
+            costText.text = cost.ToString();
         }
 
         protected virtual void Start()

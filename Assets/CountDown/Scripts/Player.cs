@@ -112,6 +112,7 @@ namespace CountDown
         {
             rocket.PlaceItem(this, item);
             var boofer = item;
+            Score += item.Cost;
             item = null;
             
             speed /= speedOnPickItemMultiplayer;
