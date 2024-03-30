@@ -35,6 +35,8 @@ namespace CountDown
         
         public bool CanDropItem => item != null;
         public bool CanPickUpItem => item == null;
+
+        public bool IsMoving => horizontalInput > 0.05f || verticalInput > 0.05f;
         public Item Item => item;
 
         public int Score
@@ -89,6 +91,7 @@ namespace CountDown
 
         private void DropItem()
         {
+            item.gameObject.SetActive(true);
             var dropItem = item;
             item = null;
 
@@ -97,7 +100,10 @@ namespace CountDown
             
             speed /= speedOnPickItemMultiplayer;
             
+            intersectingObjects.Add(dropItem.GetComponent<Collider2D>());
             DropItemEvent?.Invoke(dropItem);
+            animator.SetBool("HasBox",false);
+            
         }
 
         private void DropItemInRocket(Rocket rocket)
@@ -109,6 +115,7 @@ namespace CountDown
             speed /= speedOnPickItemMultiplayer;
             
             PlacedToRocketEvent.Invoke(boofer);
+            animator.SetBool("HasBox",false);
         }
 
         public bool CanPickUpConcreteItem(Item item)
@@ -125,11 +132,11 @@ namespace CountDown
             item.transform.localPosition = Vector3.zero;
             item.ItemState = ItemState.OnPlayer;
             intersectingObjects.Remove(item.GetComponent<Collider2D>());
-
             speed *= speedOnPickItemMultiplayer;
-            
             PickUpItemEvent?.Invoke(item);
+            animator.SetBool("HasBox", true);
         }
+        
 
         public void CheckIntersections()
         {
