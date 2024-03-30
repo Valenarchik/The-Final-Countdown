@@ -32,7 +32,7 @@ namespace CountDown
             detailSpawnPointsPool = new HashSet<Transform>(detailSpawnPointsPool);
         }
 
-        public void SpawnAllResources(int count)
+        public void SpawnAllResources()
         {
             
         }

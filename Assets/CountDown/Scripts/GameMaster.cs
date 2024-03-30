@@ -24,7 +24,7 @@ namespace CountDown
 
         private IEnumerator DelayInvoke(GameEvent gameEvent)
         {
-            yield return new WaitForSeconds(gameEvent.timeInMinutes * 60);
+            yield return new WaitForSeconds(gameEvent.TimeInMinutes * 60);
             gameEvent.Event.Invoke();
         }
     }
@@ -33,7 +33,7 @@ namespace CountDown
     public class GameEvent
     {
         public string EventName;
-        public float timeInMinutes;
+        public float TimeInMinutes;
         public UnityEvent Event;
     }
 }
