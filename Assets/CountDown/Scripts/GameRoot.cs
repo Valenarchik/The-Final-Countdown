@@ -22,6 +22,8 @@ namespace CountDown
         public Camera Player1Camera => player1Camera;
         public Camera Player2Camera => player2Camera;
 
+        public GameMaster GameMaster => gameMaster;
+
         private void Start()
         {
             StartGame();
