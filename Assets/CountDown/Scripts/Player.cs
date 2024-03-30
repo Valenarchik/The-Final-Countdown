@@ -8,9 +8,9 @@ namespace CountDown
 {
     public class Player: MonoBehaviour
     {
-        [SerializeField] private int score;
-        [SerializeField] private Item item;
-        private List<Collider> intersectingObjects;
+        [SerializeField, ReadOnlyInspector] private int score;
+        [SerializeField, ReadOnlyInspector] private Item item;
+        private readonly List<Collider2D> intersectingObjects = new ();
 
         public UnityEvent<Item> PickUpItemEvent;
         public UnityEvent<Item> DropItemEvent;
@@ -25,24 +25,30 @@ namespace CountDown
             set => score = value;
         }
 
-        public IReadOnlyCollection<Collider> IntersectingObjects => intersectingObjects;
+        public IReadOnlyCollection<Collider2D> IntersectingObjects => intersectingObjects;
 
+        
         private void DropItem()
         {
             var dropItem = item;
             item = null;
-            
-            transform.SetParent(null);
-            
+
+            dropItem.transform.SetParent(null);
+            dropItem.ItemState = ItemState.OnGround;
             DropItemEvent?.Invoke(dropItem);
         }
 
         private void DropItemInRocket(Rocket rocket)
         {
-            var dropItem = item;
+            rocket.PlaceItem(this, item);
             item = null;
-            rocket.PlaceItem(item);
-            DropItemEvent?.Invoke(dropItem);
+        }
+
+        public bool CanPickUpConcreteItem(Item item)
+        {
+            return CanPickUpItem
+                   && item != null
+                   && item.ItemState == ItemState.OnGround;
         }
 
         private void PickUpItem(Item item)
@@ -50,19 +56,20 @@ namespace CountDown
             this.item = item;
             item.transform.SetParent(transform);
             item.transform.localPosition = Vector3.zero;
+            item.ItemState = ItemState.OnPlayer;
             PickUpItemEvent?.Invoke(item);
         }
 
         public void CheckIntersections()
         {
-            Debug.Log("CheckIntersections");
+            //Debug.Log("CheckIntersections");
             if (CanPickUpItem)
             {
                 foreach (var other in intersectingObjects
                              .OrderBy(c => (transform.position - c.transform.position).magnitude))
                 {
                     var pickUpItem = other.GetComponent<Item>();
-                    if (pickUpItem != null)
+                    if (pickUpItem != null && CanPickUpConcreteItem(pickUpItem))
                     {
                         PickUpItem(pickUpItem);
                         return;
@@ -86,16 +93,16 @@ namespace CountDown
                 }
             }
         }
-        
-        private void OnTriggerEnter(Collider other)
+
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log($"Trigger Enter {other.name}");
+            //Debug.Log($"Trigger Enter {other.name}");
             intersectingObjects.Add(other);
         }
-
-        private void OnTriggerExit(Collider other)
+        
+        private void OnTriggerExit2D(Collider2D other)
         {
-            Debug.Log($"Trigger Exit {other.name}");
+            //Debug.Log($"Trigger Exit {other.name}");
             intersectingObjects.Remove(other);
         }
     }
