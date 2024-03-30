@@ -1,5 +1,6 @@
 ﻿using System;
 using DataStructures;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace CountDown
@@ -10,11 +11,18 @@ namespace CountDown
         [SerializeField] private Player player1;
         [SerializeField] private Player player2;
 
+        [Header("Cameras")] 
+        [SerializeField] private Camera player1Camera;
+        [SerializeField] private Camera player2Camera;
+
         [Header("Controllers")] 
         [SerializeField] private GameMaster gameMaster;
         
         public Player Player1 => player1;
         public Player Player2 => player2;
+
+        public Camera Player1Camera => player1Camera;
+        public Camera Player2Camera => player2Camera;
 
         private void Start()
         {
@@ -25,5 +33,7 @@ namespace CountDown
         {
             gameMaster.StartGame();
         }
+        
+        
     }
 }

@@ -54,6 +54,12 @@ public class CameraShaker : MonoBehaviour
         DetermineNextShakePosition();
     }
 
+    [EditorButton]
+    public void Shake()
+    {
+        Shake(0.5f, 200, 10);
+    }
+
 
     private void DetermineNextShakePosition()
     {
