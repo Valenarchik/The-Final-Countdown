@@ -10,7 +10,6 @@ namespace CountDown
         private Player player;
         
         public float speed = 20;
-        public float rotateSpeed = 45;
         
         private float horizontalInput;
         private float forewordInput;
@@ -25,7 +24,7 @@ namespace CountDown
             forewordInput = Input.GetAxis("Vertical" + inputId);
             
             transform.Translate(Vector2.up * speed * forewordInput * Time.deltaTime);
-            transform.Rotate(Vector2.right * rotateSpeed * horizontalInput * Time.deltaTime);
+            transform.Translate(Vector2.right * speed * horizontalInput * Time.deltaTime);
         }
     }
 
