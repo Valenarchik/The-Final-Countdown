@@ -73,6 +73,7 @@ namespace CountDown
 
             dropItem.transform.SetParent(null);
             dropItem.ItemState = ItemState.OnGround;
+            intersectingObjects.Add(dropItem.GetComponent<Collider2D>());
             DropItemEvent?.Invoke(dropItem);
             animator.SetBool("HasBox",false);
             
