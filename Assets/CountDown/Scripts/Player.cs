@@ -55,6 +55,7 @@ namespace CountDown
 
         public void CheckIntersections()
         {
+            Debug.Log("CheckIntersections");
             if (CanPickUpItem)
             {
                 foreach (var other in intersectingObjects
@@ -88,11 +89,13 @@ namespace CountDown
         
         private void OnTriggerEnter(Collider other)
         {
+            Debug.Log($"Trigger Enter {other.name}");
             intersectingObjects.Add(other);
         }
 
         private void OnTriggerExit(Collider other)
         {
+            Debug.Log($"Trigger Exit {other.name}");
             intersectingObjects.Remove(other);
         }
     }
