@@ -32,7 +32,7 @@ namespace CountDown
 
             animator.SetFloat("Horizontal", horizontalInput);
             animator.SetFloat("Vertical", verticalInput);
-            animator.SetFloat("Speed",Mathf.Abs(verticalInput+horizontalInput));
+            animator.SetFloat("Speed",Mathf.Abs(new Vector2(verticalInput, horizontalInput).sqrMagnitude));
             
             
             transform.Translate(Vector2.up * speed * verticalInput * Time.deltaTime);
