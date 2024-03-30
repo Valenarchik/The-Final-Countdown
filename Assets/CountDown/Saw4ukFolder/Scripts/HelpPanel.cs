@@ -8,10 +8,42 @@ public class HelpPanel : MonoBehaviour
 {
     [SerializeField] private TMP_Text keyName;
     [SerializeField] private TMP_Text helpText;
+    [SerializeField] private string keyString;
+    
+    private HelpPanelState currentState;
+    private Dictionary<HelpPanelState, string> states;
 
-    public void ReDraw(string keyName, string helpText)
+    public HelpPanelState CurrentState => currentState;
+
+    private void Awake()
     {
-        this.keyName.text = keyName;
-        this.helpText.text = helpText;
+        states = new Dictionary<HelpPanelState, string>()
+        {
+            { HelpPanelState.DemonstaratingItem, "Поднять предмет" },
+            { HelpPanelState.Hided, "" },
+            { HelpPanelState.DemonstratingDrop, "Выбросить предмет" },
+            { HelpPanelState.DemonstratingRocket, "Положить предмет в ракету" },
+        };
     }
+    
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+    
+    public void ReDraw(HelpPanelState helpPanelState)
+    {
+        gameObject.SetActive(true);
+        currentState = helpPanelState;
+        keyName.text = keyString;
+        helpText.text = states[helpPanelState];
+    }
+}
+
+public enum HelpPanelState
+{
+    Hided,
+    DemonstaratingItem,
+    DemonstratingDrop,
+    DemonstratingRocket
 }

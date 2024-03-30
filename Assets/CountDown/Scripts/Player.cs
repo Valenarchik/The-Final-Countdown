@@ -47,7 +47,7 @@ namespace CountDown
         {
             horizontalInput = Input.GetAxis("Horizontal" + inputId);
             verticalInput = Input.GetAxis("Vertical" + inputId);
-
+            
             animator.SetFloat("Horizontal", horizontalInput);
             animator.SetFloat("Vertical", verticalInput);
             animator.SetFloat("Speed",Mathf.Abs(verticalInput+horizontalInput));
