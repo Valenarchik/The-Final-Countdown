@@ -1,7 +1,12 @@
-﻿namespace CountDown
+﻿using DataStructures;
+using UnityEngine;
+
+namespace CountDown
 {
-    public class GameRoot
+    public class GameRoot: Singleton<GameRoot>
     {
-        
+        public Map Map;
+        public Player Player1;
+        public Player Player2;
     }
 }

@@ -1,8 +1,10 @@
 ﻿
+using UnityEngine;
+
 namespace CountDown
 {
-    public class Map
+    public class Map: MonoBehaviour
     {
-
+        public Cell[] Cells;
     }
 }
