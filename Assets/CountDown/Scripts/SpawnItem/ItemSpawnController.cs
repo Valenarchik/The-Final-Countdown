@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace CountDown
 {
@@ -13,8 +14,9 @@ namespace CountDown
         [SerializeField] private List<GameObject> resourcePrefabs;
 
         [Space(10)] 
-        [Header("Settings")] 
-        [SerializeField] private float resourceSpawnChance;
+        [Header("Settings")]
+        [SerializeField] [Range(0,1f)] private int resourcesSpawnChance;
+        [SerializeField] private int detailsCopiesCount;
         
         [Space(10)]
         [Header("Details")]
@@ -22,24 +24,34 @@ namespace CountDown
         [SerializeField] private GameObject detail2;
         [SerializeField] private GameObject detail3;
         [SerializeField] private GameObject detail4;
-
-        private HashSet<Transform> resourceSpawnPointsPool;
+        
         private HashSet<Transform> detailSpawnPointsPool;
 
         private void Awake()
         {
-            resourceSpawnPointsPool = new HashSet<Transform>(resourceSpawnPoints);
             detailSpawnPointsPool = new HashSet<Transform>(detailSpawnPointsPool);
         }
 
         public void SpawnAllResources()
         {
-            
+            foreach (var sp in resourceSpawnPoints)
+            {
+                SpawnResource(sp);
+            }
         }
 
-        private void SpawnResource()
+        private void SpawnResource(Transform spawnPoint)
         {
-            
+            if (Random.Range(0, 1f) < resourcesSpawnChance)
+            {
+                var resourcePrefab = GetRandomResource();
+                SpawnItem(resourcePrefab, spawnPoint.position);
+            }
+        }
+
+        private GameObject GetRandomResource()
+        {
+            return resourcePrefabs[Random.Range(0, resourcePrefabs.Count)];
         }
 
         public void SpawnAllDetails()
@@ -49,7 +61,13 @@ namespace CountDown
 
         private void SpawnDetail()
         {
-            
+
+        }
+
+        private void SpawnItem(GameObject prefab, Vector3 pos)
+        {
+            var resourceTransform = Instantiate(prefab).transform;
+            resourceTransform.position = pos;
         }
     }
 }
