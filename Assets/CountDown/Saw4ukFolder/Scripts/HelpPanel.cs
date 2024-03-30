@@ -22,7 +22,7 @@ public class HelpPanel : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(currentState);
+        //Debug.Log(currentState);
     }
 
     public void ReDraw(HelpPanelState helpPanelState)
