@@ -6,13 +6,16 @@ namespace CountDown
 {
     public class Item: MonoBehaviour
     {
+        private Rigidbody2D rb2D;
+        
         [SerializeField] private SpriteRenderer onGroundSpriteRenderer;
         [SerializeField] private SpriteRenderer onPlayerSpriteRenderer;
 
         [SerializeField] private TMP_Text costText;
         [SerializeField] private int cost;
         [SerializeField] private ItemState itemState;
-        
+
+        public Rigidbody2D Rb2D => rb2D;
         public int Cost => cost;
 
         public ItemState ItemState
@@ -48,6 +51,7 @@ namespace CountDown
         private void Awake()
         {
             costText.text = cost.ToString();
+            rb2D = GetComponent<Rigidbody2D>();
         }
 
         protected virtual void Start()
