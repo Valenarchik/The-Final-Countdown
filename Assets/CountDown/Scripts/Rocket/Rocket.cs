@@ -8,6 +8,11 @@ namespace CountDown
         [SerializeField] private SerializedDictionary<RocketPartType, int> checkList;
         [SerializeField, ReadOnlyInspector] private RocketStatus rocketStatus;
         public RocketStatus RocketStatus => rocketStatus;
+
+        public void Break()
+        {
+            rocketStatus = RocketStatus.Break;
+        }
         
         public bool CanPlaceItem(Item item)
         {
@@ -28,7 +33,6 @@ namespace CountDown
         {
             if (item is Resource resource)
             {
-                player.Score++;
                 Destroy(item.gameObject);
                 return;
             }

@@ -1,6 +1,4 @@
-﻿using System;
-using DataStructures;
-using JetBrains.Annotations;
+﻿using DataStructures;
 using UnityEngine;
 
 namespace CountDown
@@ -32,6 +30,11 @@ namespace CountDown
         public void StartGame()
         {
             gameMaster.StartGame();
+        }
+
+        public void GameOver()
+        {
+            
         }
 
         public Player GetOtherPlayer(Player player)
