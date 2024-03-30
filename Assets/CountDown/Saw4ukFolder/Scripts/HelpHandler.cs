@@ -12,7 +12,7 @@ public class HelpHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(player.IntersectingObjects.Count);
+        //Debug.Log(player.IntersectingObjects.Count);
         
         if (player.IntersectingObjects.Count == 0)
         {
