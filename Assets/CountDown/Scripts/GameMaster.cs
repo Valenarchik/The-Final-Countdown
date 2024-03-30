@@ -7,7 +7,7 @@ namespace CountDown
 {
     public class GameMaster: MonoBehaviour
     {
-        [SerializeField] private EventTime[] events;
+        [SerializeField, NamedArray("EventName")] private GameEvent[] events;
 
         public void StartGame()
         {
@@ -17,22 +17,23 @@ namespace CountDown
             }
         }
         
-        private void RegisterEvent(EventTime @event)
+        private void RegisterEvent(GameEvent gameEvent)
         {
-            StartCoroutine(DelayInvoke(@event));
+            StartCoroutine(DelayInvoke(gameEvent));
         }
 
-        private IEnumerator DelayInvoke(EventTime @event)
+        private IEnumerator DelayInvoke(GameEvent gameEvent)
         {
-            yield return new WaitForSeconds(@event.timeInMinutes * 60);
-            @event.Event.Invoke();
+            yield return new WaitForSeconds(gameEvent.timeInMinutes * 60);
+            gameEvent.Event.Invoke();
         }
     }
     
     [Serializable]
-    public class EventTime
+    public class GameEvent
     {
-        public UnityEvent Event;
+        public string EventName;
         public float timeInMinutes;
+        public UnityEvent Event;
     }
 }
