@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,23 +10,36 @@ namespace CountDown
     {
         [SerializeField, NamedArray("EventName")] private GameEvent[] events;
 
+        private List<GameEvent> gameEvents;
+        
         public void StartGame()
         {
-            foreach (var @event in events)
-            {
-                RegisterEvent(@event);
-            }
-        }
-        
-        private void RegisterEvent(GameEvent gameEvent)
-        {
-            StartCoroutine(DelayInvoke(gameEvent));
+            gameEvents = new List<GameEvent>(events);
+            CheckTime();
         }
 
-        private IEnumerator DelayInvoke(GameEvent gameEvent)
+        private void FixedUpdate()
         {
-            yield return new WaitForSeconds(gameEvent.TimeInMinutes * 60);
-            gameEvent.Event.Invoke();
+            UpdateTime();
+            CheckTime();
+        }
+
+        private void UpdateTime()
+        {
+            foreach (var gameEvent in gameEvents)
+                gameEvent.TimeInMinutes -= Time.deltaTime / 60;
+        }
+
+        private void CheckTime()
+        {
+            foreach (var gameEvent in gameEvents.ToArray())
+            {
+                if (gameEvent.TimeInMinutes <= 0)
+                {
+                    gameEvent.Event?.Invoke();
+                    gameEvents.Remove(gameEvent);
+                }
+            }
         }
     }
     
