@@ -50,7 +50,7 @@ namespace CountDown
             
             animator.SetFloat("Horizontal", horizontalInput);
             animator.SetFloat("Vertical", verticalInput);
-            animator.SetFloat("Speed",Mathf.Abs(verticalInput+horizontalInput));
+            animator.SetFloat("Speed",Mathf.Abs(verticalInput)+Mathf.Abs(horizontalInput));
             
             if (Input.GetKeyDown(interactionKey))
             {

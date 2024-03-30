@@ -24,6 +24,8 @@ public class HelpPanel : MonoBehaviour
             { HelpPanelState.DemonstratingDrop, "Выбросить предмет" },
             { HelpPanelState.DemonstratingRocket, "Положить предмет в ракету" },
         };
+        currentState = HelpPanelState.Hided;
+        gameObject.SetActive(false);
     }
     
     public void Hide()
@@ -33,10 +35,17 @@ public class HelpPanel : MonoBehaviour
     
     public void ReDraw(HelpPanelState helpPanelState)
     {
-        gameObject.SetActive(true);
+        if (helpPanelState != HelpPanelState.Hided)
+        {
+            gameObject.SetActive(true);
+            keyName.text = keyString;
+            helpText.text = states[helpPanelState];
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
         currentState = helpPanelState;
-        keyName.text = keyString;
-        helpText.text = states[helpPanelState];
     }
 }
 
