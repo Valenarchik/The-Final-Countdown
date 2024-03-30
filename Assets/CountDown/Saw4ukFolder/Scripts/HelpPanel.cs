@@ -45,7 +45,6 @@ public class HelpPanel : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-        
         currentState = helpPanelState;
     }
 }
