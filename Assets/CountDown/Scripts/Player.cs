@@ -154,13 +154,15 @@ namespace CountDown
         private void OnTriggerEnter2D(Collider2D other)
         {
             //Debug.Log($"Trigger Enter {other.name}");
-            intersectingObjects.Add(other);
+            if(!intersectingObjects.Contains(other))
+                intersectingObjects.Add(other);
         }
         
         private void OnTriggerExit2D(Collider2D other)
         {
             //Debug.Log($"Trigger Exit {other.name}");
-            intersectingObjects.Remove(other);
+            if(intersectingObjects.Contains(other))
+                intersectingObjects.Remove(other);
         }
     }
 }
