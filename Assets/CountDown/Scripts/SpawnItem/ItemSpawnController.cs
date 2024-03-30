@@ -20,11 +20,8 @@ namespace CountDown
         
         [Space(10)]
         [Header("Details")]
-        [SerializeField] private GameObject detail1;
-        [SerializeField] private GameObject detail2;
-        [SerializeField] private GameObject detail3;
-        [SerializeField] private GameObject detail4;
-        
+        [SerializeField] private List<GameObject> details;
+
         private HashSet<Transform> detailSpawnPointsPool;
 
         private void Awake()
@@ -56,12 +53,25 @@ namespace CountDown
 
         public void SpawnAllDetails()
         {
-            
+            foreach (var detail in details)
+            {
+                SpawnDetail(detail);
+            }
         }
 
-        private void SpawnDetail()
+        private void SpawnDetail(GameObject detailPrefab)
         {
+            for (var i = 0; i < detailsCopiesCount; i++)
+            {
+                var detailSP = GetRandomSpawnPoint();
+                detailSpawnPoints.Remove(detailSP);
+                SpawnItem(detailPrefab, detailSP.position);
+            }
+        }
 
+        private Transform GetRandomSpawnPoint()
+        {
+            return detailSpawnPoints[Random.Range(0, detailSpawnPointsPool.Count)];
         }
 
         private void SpawnItem(GameObject prefab, Vector3 pos)
