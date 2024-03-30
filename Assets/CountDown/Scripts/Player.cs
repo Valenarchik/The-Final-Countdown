@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,16 +9,30 @@ namespace CountDown
 {
     public class Player: MonoBehaviour
     {
+        [Header("Input")]
         [SerializeField] private string inputId;
-        [SerializeField] private float speed = 20;
-        [SerializeField, Range(0,1)] private float speedOnPickItemMultiplayer = 0.8f;
         [SerializeField] private KeyCode interactionKey;
         
+        [Header("Speed")]
+        [SerializeField] private float speed = 20;
+        [SerializeField, Range(0,1)] private float speedOnPickItemMultiplayer = 0.8f;
+        
+        [Header("Attack")]
+        [SerializeField] private float attackForce = 100;
+        [SerializeField] private float inputLockInSeconds = 1;
+        
+        [Header("References")]
+        [SerializeField] private PlayerFightTrigger fightTrigger;
+        
+        [Header("Debug")]
         [SerializeField, ReadOnlyInspector] private int score;
         [SerializeField, ReadOnlyInspector] private Item item;
         
         private readonly List<Collider2D> intersectingObjects = new ();
+        private bool inputLocked;
+        private Coroutine inputLockCoroutine;
         
+        [Header("Events")]
         public UnityEvent<Item> PickUpItemEvent;
         public UnityEvent<Item> DropItemEvent;
         public UnityEvent<Item> PlacedToRocketEvent;
@@ -40,32 +55,40 @@ namespace CountDown
         
         private float horizontalInput;
         private float verticalInput;
-        
+
+        private Vector2 additionalVelocity;
         
         private void Awake()
         {
             animator = GetComponent<Animator>();
             rb2D = GetComponent<Rigidbody2D>();
         }
+
+        private void Start()
+        {
+            fightTrigger.Player = this;
+        }
+
         void Update()
         {
-            horizontalInput = Input.GetAxis("Horizontal" + inputId);
-            verticalInput = Input.GetAxis("Vertical" + inputId);
+            horizontalInput = Input.GetAxis("Horizontal" + inputId) * (inputLocked ? 0 : 1);
+            verticalInput = Input.GetAxis("Vertical" + inputId) * (inputLocked ? 0 : 1);
+            
+            additionalVelocity = Vector2.Lerp(additionalVelocity, Vector2.zero, Time.deltaTime);
             
             animator.SetFloat("Horizontal", horizontalInput);
             animator.SetFloat("Vertical", verticalInput);
             animator.SetFloat("Speed",Mathf.Abs(verticalInput)+Mathf.Abs(horizontalInput));
             
+            if (inputLocked) return;
             if (Input.GetKeyDown(interactionKey))
-            {
                 CheckIntersections();
-            }
         }
 
         private void FixedUpdate()
         {
             var moveVector = new Vector2(horizontalInput, verticalInput);
-            rb2D.MovePosition(rb2D.position + moveVector * speed);
+            rb2D.MovePosition(rb2D.position + moveVector * speed + additionalVelocity);
         }
 
         private void DropItem()
@@ -119,21 +142,13 @@ namespace CountDown
 
         public void CheckIntersections()
         {
-            //Debug.Log("CheckIntersections");
-            if (CanPickUpItem)
-            {
-                foreach (var other in intersectingObjects
-                             .OrderBy(c => (transform.position - c.transform.position).magnitude))
-                {
-                    var pickUpItem = other.GetComponent<Item>();
-                    if (pickUpItem != null && CanPickUpConcreteItem(pickUpItem))
-                    {
-                        PickUpItem(pickUpItem);
-                        return;
-                    }
-                }
-            }
+            if (CheckAttack()) return;
+            if (CheckPickUp()) return;
+            CheckDrop();
+        }
 
+        private void CheckDrop()
+        {
             if (CanDropItem)
             {
                 var rocket = intersectingObjects
@@ -151,16 +166,65 @@ namespace CountDown
             }
         }
 
+        private bool CheckPickUp()
+        {
+            if (CanPickUpItem)
+            {
+                foreach (var other in intersectingObjects
+                             .OrderBy(c => (transform.position - c.transform.position).magnitude))
+                {
+                    var pickUpItem = other.GetComponent<Item>();
+                    if (pickUpItem != null && CanPickUpConcreteItem(pickUpItem))
+                    {
+                        PickUpItem(pickUpItem);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool CheckAttack()
+        {
+            if (fightTrigger.OtherEntered)
+            {
+                var otherPlayer = GameRoot.Instance.GetOtherPlayer(this);
+                var directionVec = (otherPlayer.transform.position - transform.position).normalized;
+                otherPlayer.additionalVelocity = directionVec * attackForce;
+                otherPlayer.LockInput(inputLockInSeconds);
+                return true;
+            }
+
+            return false;
+        }
+
+
+        private void LockInput(float timeInSeconds)
+        {
+            if (inputLockCoroutine != null)
+                StopCoroutine(inputLockCoroutine);
+            
+            inputLockCoroutine = StartCoroutine(LockCoroutine());
+            IEnumerator LockCoroutine()
+            {
+                inputLocked = true;
+                yield return new WaitForSeconds(timeInSeconds);
+                inputLocked = false;
+                inputLockCoroutine = null;
+            }
+        }
+
         private void OnTriggerEnter2D(Collider2D other)
         {
-            //Debug.Log($"Trigger Enter {other.name}");
-            intersectingObjects.Add(other);
+            if (!intersectingObjects.Contains(other))
+                intersectingObjects.Add(other);
         }
         
         private void OnTriggerExit2D(Collider2D other)
         {
-            //Debug.Log($"Trigger Exit {other.name}");
-            intersectingObjects.Remove(other);
+            if (intersectingObjects.Contains(other))
+                intersectingObjects.Remove(other);
         }
     }
 }

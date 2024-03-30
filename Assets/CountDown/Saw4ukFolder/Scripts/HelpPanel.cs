@@ -6,46 +6,55 @@ using UnityEngine;
 
 public class HelpPanel : MonoBehaviour
 {
-    [SerializeField] private TMP_Text keyName;
-    [SerializeField] private TMP_Text helpText;
-    [SerializeField] private string keyString;
+    [SerializeField] private GameObject ButtonObject;
+    [SerializeField] private GameObject DemonstratingItem;
+    [SerializeField] private GameObject DemonstratingDrop;
+    [SerializeField] private GameObject DemonstratingRocket;
     
     private HelpPanelState currentState;
-    private Dictionary<HelpPanelState, string> states;
-
     public HelpPanelState CurrentState => currentState;
 
     private void Awake()
     {
-        states = new Dictionary<HelpPanelState, string>()
-        {
-            { HelpPanelState.DemonstaratingItem, "Поднять предмет" },
-            { HelpPanelState.Hided, "" },
-            { HelpPanelState.DemonstratingDrop, "Выбросить предмет" },
-            { HelpPanelState.DemonstratingRocket, "Положить предмет в ракету" },
-        };
         currentState = HelpPanelState.Hided;
-        gameObject.SetActive(false);
+        ReDraw(currentState);
     }
-    
-    public void Hide()
+
+    private void Update()
     {
-        gameObject.SetActive(false);
+        Debug.Log(currentState);
     }
-    
+
     public void ReDraw(HelpPanelState helpPanelState)
     {
-        if (helpPanelState != HelpPanelState.Hided)
+        ReStoreDefaults();
+        switch (helpPanelState)
         {
-            gameObject.SetActive(true);
-            keyName.text = keyString;
-            helpText.text = states[helpPanelState];
+            case HelpPanelState.Hided:
+                break;
+            case HelpPanelState.DemonstaratingItem:
+                ButtonObject.SetActive(true);
+                DemonstratingItem.SetActive(true);
+                break;
+            case HelpPanelState.DemonstratingDrop:
+                ButtonObject.SetActive(true);
+                DemonstratingDrop.SetActive(true);
+                break;
+            case HelpPanelState.DemonstratingRocket:
+                ButtonObject.SetActive(true);
+                DemonstratingRocket.SetActive(true);
+                break;
         }
-        else
-        {
-            gameObject.SetActive(false);
-        }
+
         currentState = helpPanelState;
+    }
+
+    private void ReStoreDefaults()
+    {
+        ButtonObject.SetActive(false);
+        DemonstratingRocket.SetActive(false);
+        DemonstratingItem.SetActive(false);
+        DemonstratingDrop.SetActive(false);
     }
 }
 
