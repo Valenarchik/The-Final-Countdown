@@ -21,7 +21,6 @@ namespace CountDown
                 return checkList.TryGetValue(rocketPart.RocketPartType, out var count)
                        && count > 0;
             }
-
             return false;
         }
 

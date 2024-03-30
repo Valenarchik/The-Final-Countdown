@@ -9,25 +9,21 @@ namespace CountDown
 {
     public class ItemSpawnController : MonoBehaviour
     {
+        [Header("SpawnPoints")]
         [SerializeField] private List<Transform> resourceSpawnPoints;
         [SerializeField] private List<Transform> detailSpawnPoints;
+        [SerializeField] private List<Transform> capsuleSpawnPoints;
+        
+        [Space(10)]
+        [Header("Prefabs")]
         [SerializeField] private List<GameObject> resourcePrefabs;
+        [SerializeField] private List<GameObject> detailsPrefabs;
+        [SerializeField] private GameObject capsulePrefab;
 
         [Space(10)] 
         [Header("Settings")]
         [SerializeField] [Range(0,1f)] private float resourcesSpawnChance;
         [SerializeField] private int detailsCopiesCount;
-        
-        [Space(10)]
-        [Header("Details")]
-        [SerializeField] private List<GameObject> details;
-
-        private HashSet<Transform> detailSpawnPointsPool;
-
-        private void Awake()
-        {
-            detailSpawnPointsPool = new HashSet<Transform>(detailSpawnPoints);
-        }
 
         public void SpawnAllResources()
         {
@@ -53,7 +49,7 @@ namespace CountDown
 
         public void SpawnAllDetails()
         {
-            foreach (var detail in details)
+            foreach (var detail in detailsPrefabs)
             {
                 SpawnDetail(detail);
             }
@@ -63,15 +59,21 @@ namespace CountDown
         {
             for (var i = 0; i < detailsCopiesCount; i++)
             {
-                var detailSP = GetRandomSpawnPoint();
+                var detailSP = GetRandomSpawnPoint(detailSpawnPoints);
                 detailSpawnPoints.Remove(detailSP);
                 SpawnItem(detailPrefab, detailSP.position);
             }
         }
 
-        private Transform GetRandomSpawnPoint()
+        public void SpawnCapsule()
         {
-            return detailSpawnPoints[Random.Range(0, detailSpawnPointsPool.Count)];
+            var capsuleSP = GetRandomSpawnPoint(capsuleSpawnPoints);
+            SpawnItem(capsulePrefab, capsuleSP.position);
+        }
+
+        private Transform GetRandomSpawnPoint(List<Transform> pool)
+        {
+            return pool[Random.Range(0, pool.Count)];
         }
 
         private void SpawnItem(GameObject prefab, Vector3 pos)
