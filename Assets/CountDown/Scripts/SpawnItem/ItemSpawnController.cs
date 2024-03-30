@@ -26,7 +26,7 @@ namespace CountDown
 
         private void Awake()
         {
-            detailSpawnPointsPool = new HashSet<Transform>(detailSpawnPointsPool);
+            detailSpawnPointsPool = new HashSet<Transform>(detailSpawnPoints);
         }
 
         public void SpawnAllResources()

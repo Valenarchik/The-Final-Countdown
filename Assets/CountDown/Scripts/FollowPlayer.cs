@@ -28,7 +28,7 @@ namespace CountDown
 
                 if (Mathf.Abs(diff.x) > horizontalBorder || Mathf.Abs(diff.y) > verticalBorder)
                 {
-                    Debug.Log(diff);
+                    //Debug.Log(diff);
                     speedMultiplier = speedMultiplierValue;
                 }
 
