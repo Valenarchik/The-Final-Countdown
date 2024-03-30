@@ -33,7 +33,17 @@ namespace CountDown
         {
             gameMaster.StartGame();
         }
-        
-        
+
+        public Player GetOtherPlayer(Player player)
+        {
+            if (player == player1)
+            {
+                return player2;
+            }
+            else
+            {
+                return player1;
+            }
+        }
     }
 }
