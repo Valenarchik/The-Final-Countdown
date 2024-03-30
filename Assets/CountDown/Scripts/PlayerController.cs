@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CountDown
@@ -17,10 +18,8 @@ namespace CountDown
         private float horizontalInput;
         private float verticalInput;
 
-        private List<Collider> intersectingObjects;
+        public KeyCode InteractionKey => interactionKey;
 
-        public IReadOnlyCollection<Collider> IntersectingObjects => intersectingObjects;
-        
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -41,26 +40,8 @@ namespace CountDown
 
             if (Input.GetKeyDown(interactionKey))
             {
-                if (player.CanPickUpItem)
-                {
-                    foreach (var other in intersectingObjects)
-                    {
-                        var item = other.GetComponent<Item>();
-                        if (item != null)
-                            player.PickUpItem(item);
-                    }
-                }
+               player.CheckIntersections();
             }
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            intersectingObjects.Add(other);
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            intersectingObjects.Remove(other);
         }
     }
 
