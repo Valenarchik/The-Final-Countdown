@@ -7,9 +7,10 @@ namespace CountDown
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private string inputId;
-        private Player player;
+        [SerializeField] private float speed = 20;
+        [SerializeField] private KeyCode interactionKey;
         
-        public float speed = 20;
+        private Player player;
         
         private float horizontalInput;
         private float forewordInput;
