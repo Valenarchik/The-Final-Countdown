@@ -20,6 +20,11 @@ public class HelpPanel : MonoBehaviour
         ReDraw(currentState);
     }
 
+    private void Update()
+    {
+        //Debug.Log(currentState);
+    }
+
     public void ReDraw(HelpPanelState helpPanelState)
     {
         ReStoreDefaults();

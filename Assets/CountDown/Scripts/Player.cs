@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 namespace CountDown
 {
@@ -21,6 +22,7 @@ namespace CountDown
         [SerializeField] private float attackForce = 100;
         [SerializeField] private float inputLockInSeconds = 1;
         [SerializeField] private float attackCooldownInSeconds = 5;
+        [SerializeField] private float dropForce = 20;
         
         [Header("References")]
         [SerializeField] private PlayerFightTrigger fightTrigger;
@@ -193,12 +195,19 @@ namespace CountDown
 
         private bool CheckAttack()
         {
-            if (!attackCooldown && fightTrigger.OtherEntered)
+            if (!attackCooldown && fightTrigger.OtherEntered && Item == null)
             {
                 var otherPlayer = GameRoot.Instance.GetOtherPlayer(this);
                 var directionVec = (otherPlayer.transform.position - transform.position).normalized;
                 otherPlayer.additionalVelocity = directionVec * attackForce;
                 otherPlayer.LockInput(inputLockInSeconds);
+                if (otherPlayer.Item != null)
+                {
+                    var itemDropped = otherPlayer.Item;
+                    otherPlayer.DropItem();
+                    var randomVector = new Vector2(Random.Range(0f, 1f), Random.Range(0f, 1f)).normalized;
+                    itemDropped.Rb2D.MovePosition(randomVector * dropForce);
+                }
                 CooldownAttack(attackCooldownInSeconds);
                 return true;
             }

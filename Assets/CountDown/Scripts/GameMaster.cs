@@ -12,16 +12,19 @@ namespace CountDown
         [SerializeField] private TimeMultiplier[] timeMultipliers;
         
         private List<GameEvent> gameEvents;
-        private float maxTime;
+        private float maxTimeInMinutes;
         private bool paused;
         
         private float timeScale = 1;
         private float timeInMinutes;
-        
+
+        public float MaxTimeInMinutes => maxTimeInMinutes;
+        public float TimeInMinutes => timeInMinutes;
+
         public void StartGame()
         {
             gameEvents = new List<GameEvent>(events);
-            maxTime = gameEvents.Max(x => x.TimeInMinutes);
+            maxTimeInMinutes = gameEvents.Max(x => x.TimeInMinutes);
             CheckTime();
         }
 
@@ -43,8 +46,8 @@ namespace CountDown
         private void UpdateScale()
         {
             var curMultiplier = timeMultipliers
-                .Where(x => x.timePercent * maxTime < timeInMinutes)
-                .OrderByDescending(x => x.timePercent * maxTime)
+                .Where(x => x.timePercent * maxTimeInMinutes < timeInMinutes)
+                .OrderByDescending(x => x.timePercent * maxTimeInMinutes)
                 .FirstOrDefault();
             var prevScale = timeScale;
             timeScale = curMultiplier?.timeScale ?? 1;

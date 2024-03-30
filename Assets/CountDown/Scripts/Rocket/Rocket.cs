@@ -12,6 +12,7 @@ namespace CountDown
         public void Break()
         {
             rocketStatus = RocketStatus.Break;
+            GetComponent<SpriteRenderer>().color = Color.red;
         }
         
         public bool CanPlaceItem(Item item)
