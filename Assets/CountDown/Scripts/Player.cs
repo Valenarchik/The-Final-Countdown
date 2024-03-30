@@ -8,16 +8,27 @@ namespace CountDown
 {
     public class Player: MonoBehaviour
     {
+        [Header("Input")]
         [SerializeField] private string inputId;
-        [SerializeField] private float speed = 20;
-        [SerializeField, Range(0,1)] private float speedOnPickItemMultiplayer = 0.8f;
         [SerializeField] private KeyCode interactionKey;
         
+        [Header("Speed")]
+        [SerializeField] private float speed = 20;
+        [SerializeField, Range(0,1)] private float speedOnPickItemMultiplayer = 0.8f;
+        
+        [Header("Attack")]
+        [SerializeField] private float attackForce = 100;
+        
+        [Header("References")]
+        [SerializeField] private PlayerFightTrigger fightTrigger;
+        
+        [Header("Debug")]
         [SerializeField, ReadOnlyInspector] private int score;
         [SerializeField, ReadOnlyInspector] private Item item;
         
         private readonly List<Collider2D> intersectingObjects = new ();
         
+        [Header("Events")]
         public UnityEvent<Item> PickUpItemEvent;
         public UnityEvent<Item> DropItemEvent;
         public UnityEvent<Item> PlacedToRocketEvent;
@@ -38,17 +49,26 @@ namespace CountDown
         
         private float horizontalInput;
         private float verticalInput;
-        
+
+        private Vector2 additionalVelocity;
         
         private void Awake()
         {
             animator = GetComponent<Animator>();
             rb2D = GetComponent<Rigidbody2D>();
         }
+
+        private void Start()
+        {
+            fightTrigger.Player = this;
+        }
+
         void Update()
         {
+            //Debug.Log($"{rb2D.velocity} {name}");
             horizontalInput = Input.GetAxis("Horizontal" + inputId);
             verticalInput = Input.GetAxis("Vertical" + inputId);
+            additionalVelocity = Vector2.Lerp(additionalVelocity, Vector2.zero, Time.deltaTime);
             
             animator.SetFloat("Horizontal", horizontalInput);
             animator.SetFloat("Vertical", verticalInput);
@@ -62,8 +82,9 @@ namespace CountDown
 
         private void FixedUpdate()
         {
+        
             var moveVector = new Vector2(horizontalInput, verticalInput);
-            rb2D.MovePosition(rb2D.position + moveVector * speed);
+            rb2D.MovePosition(rb2D.position + moveVector * speed + additionalVelocity);
         }
 
         private void DropItem()
@@ -112,7 +133,16 @@ namespace CountDown
 
         public void CheckIntersections()
         {
-            //Debug.Log("CheckIntersections");
+            if (fightTrigger.OtherEntered)
+            {
+                
+                var otherPlayer = GameRoot.Instance.GetOtherPlayer(this);
+                var directionVec = (otherPlayer.transform.position - transform.position).normalized;
+                otherPlayer.additionalVelocity = directionVec * attackForce;
+                
+                return;
+            }
+            
             if (CanPickUpItem)
             {
                 foreach (var other in intersectingObjects
