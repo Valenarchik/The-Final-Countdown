@@ -8,10 +8,16 @@ namespace CountDown
 {
     public class Player: MonoBehaviour
     {
+        [SerializeField] private string inputId;
+        [SerializeField] private Animator animator;
+        [SerializeField] private float speed = 20;
+        [SerializeField] private KeyCode interactionKey;
+        
         [SerializeField, ReadOnlyInspector] private int score;
         [SerializeField, ReadOnlyInspector] private Item item;
+        
         private readonly List<Collider2D> intersectingObjects = new ();
-
+        
         public UnityEvent<Item> PickUpItemEvent;
         public UnityEvent<Item> DropItemEvent;
         
@@ -24,9 +30,37 @@ namespace CountDown
             get => score;
             set => score = value;
         }
-
         public IReadOnlyCollection<Collider2D> IntersectingObjects => intersectingObjects;
+        
+        private Rigidbody2D rb2D;
+        
+        private float horizontalInput;
+        private float verticalInput;
+        
+        
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+            rb2D = GetComponent<Rigidbody2D>();
+        }
+        void Update()
+        {
+            horizontalInput = Input.GetAxis("Horizontal" + inputId);
+            verticalInput = Input.GetAxis("Vertical" + inputId);
+            
+            animator.SetFloat("Horizontal", horizontalInput);
+            animator.SetFloat("Vertical", verticalInput);
+            animator.SetFloat("Speed",Mathf.Abs(verticalInput+horizontalInput));
 
+            var moveVector = new Vector2(horizontalInput, verticalInput);
+            
+            transform.Translate(moveVector * speed * Time.deltaTime);
+
+            if (Input.GetKeyDown(interactionKey))
+            {
+                CheckIntersections();
+            }
+        }
         
         private void DropItem()
         {
