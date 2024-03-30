@@ -19,6 +19,7 @@ namespace CountDown
         
         public UnityEvent<Item> PickUpItemEvent;
         public UnityEvent<Item> DropItemEvent;
+        public UnityEvent<Item> PlacedToRocketEvent;
         
         public bool CanDropItem => item != null;
         public bool CanPickUpItem => item == null;
@@ -66,18 +67,22 @@ namespace CountDown
 
         private void DropItem()
         {
+            item.gameObject.SetActive(true);
             var dropItem = item;
             item = null;
 
             dropItem.transform.SetParent(null);
             dropItem.ItemState = ItemState.OnGround;
             DropItemEvent?.Invoke(dropItem);
+            
         }
 
         private void DropItemInRocket(Rocket rocket)
         {
             rocket.PlaceItem(this, item);
+            var boofer = item;
             item = null;
+            PlacedToRocketEvent.Invoke(boofer);
         }
 
         public bool CanPickUpConcreteItem(Item item)
@@ -93,6 +98,8 @@ namespace CountDown
             item.transform.SetParent(transform);
             item.transform.localPosition = Vector3.zero;
             item.ItemState = ItemState.OnPlayer;
+            item.gameObject.SetActive(false);
+            intersectingObjects.Remove(item.GetComponent<Collider2D>());
             PickUpItemEvent?.Invoke(item);
         }
 
