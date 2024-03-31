@@ -66,6 +66,7 @@ namespace CountDown
             if (item is RocketPart rocketPart)
             {
                 checkList[rocketPart.RocketPartType]--;
+                SfxManager.Instance.Play(rocketUpgradeSfx);
                 NextStage();
                 partAdded?.Invoke(rocketPart);
                 Destroy(item.gameObject);
