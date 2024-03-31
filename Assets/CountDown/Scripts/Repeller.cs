@@ -12,15 +12,18 @@ public class Repeller : MonoBehaviour
             Vector2 distanceVector =(other.transform.position - transform.position);
             var direction = distanceVector.normalized;
             var distance = distanceVector.magnitude;
-
-            player.AdditionalVelocity += power * direction / (distance * distance);
+            
+            player.AdditionalVelocity += (power * direction / Math.Max(distance, 0.01f));
         }
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, 1.6f);
+        if (!Application.isPlaying)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(transform.position, 1.6f);
+        }
     }
 
     public void DestroyGM()

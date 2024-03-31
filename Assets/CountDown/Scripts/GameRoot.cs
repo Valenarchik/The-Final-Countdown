@@ -23,6 +23,9 @@ namespace CountDown
         public Camera Player2Camera => player2Camera;
 
         public GameMaster GameMaster => gameMaster;
+        
+        public Vector2 Player1StartPosition { get; private set; }
+        public Vector2 Player2StartPosition { get; private set; }
 
         private void Start()
         {
@@ -32,6 +35,8 @@ namespace CountDown
         public void StartGame()
         {
             gameMaster.StartGame();
+            Player1StartPosition = Player1.transform.position;
+            Player2StartPosition = Player2.transform.position;
         }
 
         public void GameOver()
