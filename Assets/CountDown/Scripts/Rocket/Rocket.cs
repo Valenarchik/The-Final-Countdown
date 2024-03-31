@@ -71,14 +71,13 @@ namespace CountDown
                 NextStage();
                 partAdded?.Invoke(rocketPart);
                 Destroy(item.gameObject);
-
-                if (checkList.Values.All(x => x == 0))
+                
+                if (checkList.Values.Count(x => x > 0) == 1)
+                    GameRoot.Instance.GameMaster.SkipCurrentPhase();
+                else if(checkList.Values.All(x =>x == 0))
                 {
-                    GameRoot.Instance.GameMaster.ScipCurrentPhase();
-                    effects.StartFlight();
+                    GameRoot.Instance.WinGame(player);
                 }
-
-                return;
             }
         }
 

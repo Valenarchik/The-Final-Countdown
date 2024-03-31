@@ -36,6 +36,9 @@ namespace CountDown
         
         private readonly List<Collider2D> intersectingObjects = new ();
 
+        [Space]
+        public Canvas Canvas;
+
 
         // private Dictionary<string, bool> boolById = new()
         // {
@@ -118,6 +121,11 @@ namespace CountDown
             if (inputLocked) return;
             if (Input.GetKeyDown(interactionKey))
                 CheckIntersections();
+        }
+
+        public void SpeedUp()
+        {
+            speed *= 1.1f;
         }
 
         public void Fall()
