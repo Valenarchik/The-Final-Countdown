@@ -23,6 +23,7 @@ namespace CountDown
         [SerializeField] private float inputLockInSeconds = 1;
         [SerializeField] private float attackCooldownInSeconds = 5;
         [SerializeField] private float dropForce = 20;
+        [SerializeField] private SpriteRenderer ifCantFightImage;
         public bool CanAttack => !attackCooldown && fightTrigger.OtherEntered && Item == null;
         
         [Header("References")]
@@ -105,6 +106,7 @@ namespace CountDown
         {
             var moveVector = new Vector2(horizontalInput, verticalInput);
             rb2D.MovePosition(rb2D.position + moveVector * speed + additionalVelocity);
+            ifCantFightImage.enabled = attackCooldown;
         }
 
         private void DropItem()
