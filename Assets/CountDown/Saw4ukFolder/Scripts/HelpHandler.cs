@@ -35,6 +35,18 @@ public class HelpHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (player.CanAttack && helpPanel.CurrentState != HelpPanelState.DemonstratingPunch)
+        {
+            helpPanel.ReDraw(HelpPanelState.DemonstratingPunch);
+            return;
+        }
+
+        if (!player.CanAttack && helpPanel.CurrentState == HelpPanelState.DemonstratingPunch)
+        {
+            helpPanel.ReDraw(HelpPanelState.Hided);
+        }
+        
+        
         if (player.IntersectingObjects.Count == 0)
         {
             if (player.CanDropItem && helpPanel.CurrentState != HelpPanelState.DemonstratingDrop)

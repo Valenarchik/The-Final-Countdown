@@ -23,6 +23,7 @@ namespace CountDown
         [SerializeField] private float inputLockInSeconds = 1;
         [SerializeField] private float attackCooldownInSeconds = 5;
         [SerializeField] private float dropForce = 20;
+        public bool CanAttack => !attackCooldown && fightTrigger.OtherEntered && Item == null;
         
         [Header("References")]
         [SerializeField] private PlayerFightTrigger fightTrigger;
@@ -195,7 +196,7 @@ namespace CountDown
 
         private bool CheckAttack()
         {
-            if (!attackCooldown && fightTrigger.OtherEntered && Item == null)
+            if (CanAttack)
             {
                 var otherPlayer = GameRoot.Instance.GetOtherPlayer(this);
                 var directionVec = (otherPlayer.transform.position - transform.position).normalized;
