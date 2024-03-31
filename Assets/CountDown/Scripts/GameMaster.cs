@@ -88,6 +88,7 @@ namespace CountDown
 
         public void ScipCurrentPhase()
         {
+            Debug.Log("ScipCurrentPhase");
             var nextEvent = gameEvents
                 .OrderBy(x => x.TimeInMinutes)
                 .FirstOrDefault(x => timeInMinutes < x.TimeInMinutes);
