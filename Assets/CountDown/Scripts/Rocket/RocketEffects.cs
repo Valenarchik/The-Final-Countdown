@@ -14,7 +14,12 @@ namespace CountDown
         [SerializeField] private List<ParticleSystem> breakParticles;
         [SerializeField] private float breakDuration = 3f;
         [SerializeField] private float changeSpriteTime = 2f;
-        
+
+        [Space(10)] 
+        [Header("Flight")] 
+        [SerializeField] private List<ParticleSystem> flightParticles;
+        [SerializeField] private float flightSpeed;
+ 
         public void ActiveBreak(Action changeSpriteCallback)
         {
             StartCoroutine(BreakRocket(changeSpriteCallback));
@@ -24,6 +29,13 @@ namespace CountDown
                 main.duration = breakDuration;
                 
                 ps.Play();
+            }
+        }
+
+        public void StartFlight()
+        {
+            foreach (var ps in breakParticles)
+            {
             }
         }
 
