@@ -12,6 +12,7 @@ namespace CountDown
         [SerializeField] private SerializedDictionary<RocketPartType, int> checkList;
         [SerializeField, ReadOnlyInspector] private RocketStatus rocketStatus;
         [SerializeField] private List<Sprite> stagesSprites;
+        [SerializeField] private RocketEffects effects;
 
         private int currentStage;
         public RocketStatus RocketStatus => rocketStatus;
@@ -28,10 +29,15 @@ namespace CountDown
         public void Break()
         {
             rocketStatus = RocketStatus.Break;
+            effects.ActiveBreak(ChangeSprite);
+        }
+
+        private void ChangeSprite()
+        {
             currentStage = 0;
             spriteRenderer.sprite = stagesSprites[0];
         }
-        
+
         public bool CanPlaceItem(Item item)
         {
             if (item is Resource resource)
@@ -61,10 +67,12 @@ namespace CountDown
                 NextStage();
                 partAdded?.Invoke(rocketPart);
                 Destroy(item.gameObject);
-                
+
                 if (checkList.Values.All(x => x == 0))
+                {
                     GameRoot.Instance.GameMaster.ScipCurrentPhase();
-                    
+                }
+
                 return;
             }
         }
