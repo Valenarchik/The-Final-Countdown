@@ -13,16 +13,11 @@ namespace CountDown
         [SerializeField, ReadOnlyInspector] private RocketStatus rocketStatus;
         [SerializeField] private List<Sprite> stagesSprites;
         [SerializeField] private RocketEffects effects;
+        [SerializeField] private SpriteRenderer spriteRenderer;
 
         private int currentStage;
         public RocketStatus RocketStatus => rocketStatus;
-
-        private SpriteRenderer spriteRenderer;
-
-        private void Awake()
-        {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-        }
+        
 
         public event Action<RocketPart> partAdded;
         
@@ -30,6 +25,15 @@ namespace CountDown
         {
             rocketStatus = RocketStatus.Break;
             effects.ActiveBreak(ChangeSprite);
+        }
+
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                //GameRoot.Instance.GameMaster.ScipCurrentPhase();
+                effects.StartFlight();
+            }
         }
 
         private void ChangeSprite()
@@ -71,6 +75,7 @@ namespace CountDown
                 if (checkList.Values.All(x => x == 0))
                 {
                     GameRoot.Instance.GameMaster.ScipCurrentPhase();
+                    effects.StartFlight();
                 }
 
                 return;

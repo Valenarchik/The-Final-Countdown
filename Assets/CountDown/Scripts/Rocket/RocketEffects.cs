@@ -8,6 +8,7 @@ namespace CountDown
 {
     public class RocketEffects : MonoBehaviour
     {
+        private const string ACTIVE_KEY = "Active";
         [SerializeField] private Animator animator;
         
         [Header("Break")] 
@@ -19,7 +20,14 @@ namespace CountDown
         [Header("Flight")] 
         [SerializeField] private List<ParticleSystem> flightParticles;
         [SerializeField] private float flightSpeed;
- 
+        [SerializeField] private float maxFlightSpeed;
+        [SerializeField] private float flightAcceleration;
+
+        [SerializeField] private float minParticleSpeed;
+        [SerializeField] private float particleAccelerationRatio;
+
+        private bool flightStart;
+
         public void ActiveBreak(Action changeSpriteCallback)
         {
             StartCoroutine(BreakRocket(changeSpriteCallback));
@@ -34,8 +42,26 @@ namespace CountDown
 
         public void StartFlight()
         {
-            foreach (var ps in breakParticles)
+            animator.SetBool(ACTIVE_KEY, true);
+            foreach (var ps in flightParticles)
             {
+                ps.Play();
+            }
+
+            flightStart = true;
+        }
+
+        private void Update()
+        {
+            if (flightStart)
+            {
+                foreach (var ps in flightParticles)
+                {
+                    var main = ps.main;
+                    main.startSpeed = flightSpeed * particleAccelerationRatio;
+                }
+                transform.position += Vector3.up * (flightSpeed * Time.deltaTime);
+                flightSpeed += flightAcceleration;
             }
         }
 
