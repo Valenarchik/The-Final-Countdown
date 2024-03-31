@@ -15,6 +15,8 @@ namespace CountDown
 
         [SerializeField] private float timeBarSmooth;
         [SerializeField] private float timeLooseBarSmooth;
+        [SerializeField] private float looseBarSmoothCharge;
+        [SerializeField] private float looseBarChargeThreshold;
         
         
         private float currentValue;
@@ -60,9 +62,15 @@ namespace CountDown
                 }
                 else
                 {
+                    var smoothCharge = currentBarLooseScale.x - targetXScale.Value > looseBarChargeThreshold
+                        ? looseBarSmoothCharge
+                        : 1f;
+                    
+                    Debug.Log(smoothCharge);
+
                     timeLooseBar.localScale = Vector3.Lerp(currentBarLooseScale,
                         new Vector3(targetXScale.Value, currentBarLooseScale.y, currentBarLooseScale.z),
-                        timeLooseBarSmooth * Time.deltaTime);
+                        timeLooseBarSmooth * Time.deltaTime * smoothCharge);
                 }
 
                 if (barIsFinish && barLooseIsFinish)
