@@ -1,5 +1,6 @@
 ﻿public enum SceneName
 {
+    GameMap,
     MainMenu,
-    GameMap
+    
 }
