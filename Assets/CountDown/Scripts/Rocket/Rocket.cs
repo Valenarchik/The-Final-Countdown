@@ -12,7 +12,7 @@ namespace CountDown
         [SerializeField] private SerializedDictionary<RocketPartType, int> checkList;
         [SerializeField, ReadOnlyInspector] private RocketStatus rocketStatus;
         [SerializeField] private List<Sprite> stagesSprites;
-        [SerializeField] private RocketEffects effects;
+        [SerializeField] public RocketEffects effects;
 
         private int currentStage;
         public RocketStatus RocketStatus => rocketStatus;
@@ -71,7 +71,9 @@ namespace CountDown
                 if (checkList.Values.Count(x => x > 0) == 1)
                     GameRoot.Instance.GameMaster.SkipCurrentPhase();
                 else if(checkList.Values.All(x =>x == 0))
+                {
                     GameRoot.Instance.WinGame(player);
+                }
             }
         }
 
