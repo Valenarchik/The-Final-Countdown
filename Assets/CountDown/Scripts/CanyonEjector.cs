@@ -32,7 +32,7 @@ namespace CountDown
                 }
                 player.Fall();
                 
-                StartCoroutine(DelayCoroutine(0.5f));
+                StartCoroutine(DelayCoroutine(0.7f));
             }
 
             IEnumerator DelayCoroutine(float time)
