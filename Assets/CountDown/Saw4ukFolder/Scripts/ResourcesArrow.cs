@@ -9,7 +9,13 @@ public class ResourcesArrow : MonoBehaviour
 {
     [SerializeField] private Arrow arrow;
     [SerializeField] private GameObject playerObject;
+    [SerializeField] private SpriteRenderer arrowSpriteRenderer;
+    [SerializeField] private SpriteRenderer iconSpriteRenderer;
     [SerializeField] private ItemSpawnController itemSpawnController;
+
+    [SerializeField] private Sprite boxSprite;
+    [SerializeField] private Sprite detailSprite;
+    [SerializeField] private Sprite capsuleSprite;
 
     private Animator animator;
 
@@ -18,11 +24,37 @@ public class ResourcesArrow : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    public void Show()
+    public void Show(ResourceTypeForArrow type)
     {
-        var nearestItemTransform = itemSpawnController.Resources.Where(x => x != null).OrderBy(x => Vector3.Distance(x.position, playerObject.transform.position)).First();
-        arrow.DestinationObject = nearestItemTransform.gameObject;
-        animator.SetTrigger("animate");
+        switch (type)
+        {
+            case ResourceTypeForArrow.Recource:
+                var nearestItemTransform = itemSpawnController.Resources.Where(x => x != null).OrderBy(x => Vector3.Distance(x.position, playerObject.transform.position)).First();
+                arrow.DestinationObject = nearestItemTransform.gameObject;
+                arrowSpriteRenderer.color = new Color32(245,200,0,255);
+                iconSpriteRenderer.sprite = boxSprite;
+                animator.SetTrigger("animate");
+                break;
+            case ResourceTypeForArrow.Detail:
+                var nearestDetailTransform = itemSpawnController.Details.Where(x => x != null).OrderBy(x => Vector3.Distance(x.position, playerObject.transform.position)).First();
+                arrow.DestinationObject = nearestDetailTransform.gameObject;
+                arrowSpriteRenderer.color = new Color32(20,30,210,255);
+                iconSpriteRenderer.sprite = detailSprite;
+                break;
+            case ResourceTypeForArrow.Capsule:
+                arrow.DestinationObject = itemSpawnController.Capsule.gameObject;
+                arrowSpriteRenderer.color = new Color32(220,5,0,255);
+                iconSpriteRenderer.sprite = capsuleSprite;
+                break;
+        }
+        
     }
     
+}
+
+public enum ResourceTypeForArrow
+{
+    Recource,
+    Detail,
+    Capsule
 }
