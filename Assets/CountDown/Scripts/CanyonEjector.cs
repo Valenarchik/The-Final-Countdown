@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace CountDown
@@ -6,6 +7,7 @@ namespace CountDown
     public class CanyonEjector: MonoBehaviour
     {
         private CompositeCollider2D collider2D;
+        private bool coroutineStarted;
 
         private void Awake()
         {
@@ -16,6 +18,9 @@ namespace CountDown
         {
             if(!other.TryGetComponent<Player>(out var player))
                 return;
+         
+            if (coroutineStarted)
+                return;
             
             if (collider2D.OverlapPoint(player.transform.position))
             {
@@ -25,10 +30,21 @@ namespace CountDown
                     player.DropItem();
                     player.IntersectingObjects.Remove(item.GetComponent<Collider2D>());
                 }
+                player.Fall();
+                
+                StartCoroutine(DelayCoroutine(0.5f));
+            }
+
+            IEnumerator DelayCoroutine(float time)
+            {
+                player.LockInput(time);
+                coroutineStarted = true;
+                yield return new WaitForSeconds(time);
                 player.LockMovement(0.1f);
                 player.Rb2D.MovePosition(GameRoot.Instance.Player1 == player
                     ? GameRoot.Instance.Player1StartPosition
                     : GameRoot.Instance.Player2StartPosition);
+                coroutineStarted = false;
             }
         }
     }
