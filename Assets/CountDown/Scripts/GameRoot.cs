@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DataStructures;
 using UnityEngine;
 
@@ -106,7 +107,7 @@ namespace CountDown
         private IEnumerator LoadWinOrLoseSceneDelay(bool isWin,int playerId, float timeInSeconds)
         {
             yield return new WaitForSeconds(timeInSeconds);
-            WinOrLoseScene.Load(isWin, playerId);
+            WinOrLoseScene.Load(isWin, playerId, Players.Sum(x => x.Score), GameMaster.TimeInMinutes);
         }
         
         public Player GetOtherPlayer(Player player)
