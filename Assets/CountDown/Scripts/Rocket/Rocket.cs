@@ -55,12 +55,17 @@ namespace CountDown
             if (item is RocketPart rocketPart)
             {
                 checkList[rocketPart.RocketPartType]--;
-                currentStage++;
-                if(currentStage < stagesSprites.Count)
-                    spriteRenderer.sprite = stagesSprites[currentStage];
+                NextStage();
                 Destroy(item.gameObject);
                 return;
             }
+        }
+
+        private void NextStage()
+        {
+            currentStage++;
+            if(currentStage < stagesSprites.Count)
+                spriteRenderer.sprite = stagesSprites[currentStage];
         }
     }
 }
