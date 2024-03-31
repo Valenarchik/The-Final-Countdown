@@ -59,6 +59,11 @@ public class CameraShaker : MonoBehaviour
     {
         Shake(0.5f, 200, 10);
     }
+    
+    public void Shake(int count)
+    {
+        Shake(0.5f, count, 10);
+    }
 
 
     private void DetermineNextShakePosition()

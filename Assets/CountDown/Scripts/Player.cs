@@ -36,6 +36,9 @@ namespace CountDown
         
         private readonly List<Collider2D> intersectingObjects = new ();
 
+        [Space]
+        public Canvas Canvas;
+
 
         // private Dictionary<string, bool> boolById = new()
         // {

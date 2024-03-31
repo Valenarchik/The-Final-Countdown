@@ -2,5 +2,5 @@
 {
     GameMap,
     MainMenu,
-    
+    WinOrLoseScene
 }
