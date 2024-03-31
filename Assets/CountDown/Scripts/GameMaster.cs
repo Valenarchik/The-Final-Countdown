@@ -64,17 +64,17 @@ namespace CountDown
             UpdateTime(deltaTime);
         }
         
-        private void UpdateTime(float deltaTime)
+        public void UpdateTime(float deltaTimeInMinutes)
         {
             foreach (var gameEvent in gameEvents)
             {
-                gameEvent.TimeInMinutes -= deltaTime;
+                gameEvent.TimeInMinutes -= deltaTimeInMinutes;
             }
             
-            timeInMinutes += deltaTime;
+            timeInMinutes += deltaTimeInMinutes;
         }
 
-        private void CheckTime()
+        public void CheckTime()
         {
             foreach (var gameEvent in gameEvents.ToArray())
             {
@@ -86,7 +86,11 @@ namespace CountDown
             }
         }
 
-        public void ScipCurrentPhase()
+        public void Skip15Seconds()
+        {
+        }
+
+        public void SkipCurrentPhase()
         {
             Debug.Log("ScipCurrentPhase");
             var nextEvent = gameEvents
@@ -95,6 +99,7 @@ namespace CountDown
             if (nextEvent != null)
             {
                 UpdateTime(nextEvent.TimeInMinutes - TimeInMinutes);
+                CheckTime();
             }
         }
     }

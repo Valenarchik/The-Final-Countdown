@@ -69,7 +69,9 @@ namespace CountDown
                 Destroy(item.gameObject);
                 
                 if (checkList.Values.Count(x => x > 0) == 1)
-                    GameRoot.Instance.GameMaster.ScipCurrentPhase();
+                    GameRoot.Instance.GameMaster.SkipCurrentPhase();
+                else if(checkList.Values.All(x =>x == 0))
+                    GameRoot.Instance.WinGame(player);
             }
         }
 

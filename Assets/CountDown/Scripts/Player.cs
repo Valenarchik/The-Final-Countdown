@@ -120,6 +120,11 @@ namespace CountDown
                 CheckIntersections();
         }
 
+        public void SpeedUp()
+        {
+            speed *= 1.1f;
+        }
+
         public void Fall()
         {
             animator.SetTrigger("Fall");

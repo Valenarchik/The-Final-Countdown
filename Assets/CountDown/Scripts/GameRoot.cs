@@ -12,6 +12,7 @@ namespace CountDown
         [Header("Cameras")] 
         [SerializeField] private Camera player1Camera;
         [SerializeField] private Camera player2Camera;
+        [SerializeField] private Camera rocketCamera;
 
         [Header("Controllers")] 
         [SerializeField] private GameMaster gameMaster;
@@ -40,6 +41,11 @@ namespace CountDown
         }
 
         public void GameOver()
+        {
+            
+        }
+
+        public void WinGame(Player player)
         {
             
         }
