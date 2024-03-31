@@ -19,6 +19,9 @@ public class WinLoseSceneDrawer : MonoBehaviour
 
     private void OnEnable()
     {
+        scoreText.text = WinOrLoseScene.Score.ToString();
+        timeText.text = WinOrLoseScene.TimeInMinutes.ToString("0:00");
+        
         if (!WinOrLoseScene.IsWin)
         {
             winText.text = "Вы оба проиграли";
