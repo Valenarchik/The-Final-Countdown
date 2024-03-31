@@ -22,6 +22,8 @@ namespace CountDown
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
+        public event Action<RocketPart> partAdded;
+        
         public void Break()
         {
             rocketStatus = RocketStatus.Break;
@@ -56,6 +58,7 @@ namespace CountDown
             {
                 checkList[rocketPart.RocketPartType]--;
                 NextStage();
+                partAdded?.Invoke(rocketPart);
                 Destroy(item.gameObject);
                 return;
             }
