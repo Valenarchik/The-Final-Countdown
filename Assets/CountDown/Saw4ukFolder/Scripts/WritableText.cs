@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CountDown.Saw4ukFolder.Scripts
 {
@@ -10,7 +11,8 @@ namespace CountDown.Saw4ukFolder.Scripts
     {
         [SerializeField] private TMP_Text textField;
         [SerializeField] private float timeBetweenLettersInSeconds;
-        
+
+        public UnityEvent textWritten;
 
         private void Awake()
         {
@@ -34,6 +36,7 @@ namespace CountDown.Saw4ukFolder.Scripts
                 textField.text = builder.ToString();
                 yield return new WaitForSeconds(timeBetweenLettersInSeconds);
             }
+            textWritten.Invoke();
         }
     }
 }

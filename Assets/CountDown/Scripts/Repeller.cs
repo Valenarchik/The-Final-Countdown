@@ -1,3 +1,4 @@
+using System;
 using CountDown;
 using UnityEngine;
 
@@ -11,8 +12,17 @@ public class Repeller : MonoBehaviour
             Vector2 distanceVector =(other.transform.position - transform.position);
             var direction = distanceVector.normalized;
             var distance = distanceVector.magnitude;
+            
+            player.AdditionalVelocity += (power * direction / Math.Max(distance, 0.01f));
+        }
+    }
 
-            player.AdditionalVelocity += power * direction * distance * distance;
+    private void OnDrawGizmos()
+    {
+        if (!Application.isPlaying)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(transform.position, 1.6f);
         }
     }
 

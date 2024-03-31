@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -66,6 +67,10 @@ namespace CountDown
                 NextStage();
                 partAdded?.Invoke(rocketPart);
                 Destroy(item.gameObject);
+                
+                if (checkList.Values.All(x => x == 0))
+                    GameRoot.Instance.GameMaster.ScipCurrentPhase();
+                    
                 return;
             }
         }
