@@ -65,7 +65,15 @@ namespace CountDown
         private float verticalInput;
 
         private Vector2 additionalVelocity;
-        
+
+        public Rigidbody2D Rb2D => rb2D;
+
+        public Vector2 AdditionalVelocity
+        {
+            get => additionalVelocity;
+            set => additionalVelocity = value;
+        }
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
