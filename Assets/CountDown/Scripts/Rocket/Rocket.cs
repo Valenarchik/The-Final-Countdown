@@ -12,26 +12,29 @@ namespace CountDown
         [SerializeField] private SerializedDictionary<RocketPartType, int> checkList;
         [SerializeField, ReadOnlyInspector] private RocketStatus rocketStatus;
         [SerializeField] private List<Sprite> stagesSprites;
-        [SerializeField] public RocketEffects effects;
+        [field:SerializeField] public RocketEffects Effects { get; private set; }
+        [SerializeField] private SpriteRenderer spriteRenderer;
+        
         [Header("Sfx")] 
         [SerializeField] private SFXData rocketUpgradeSfx;
 
         private int currentStage;
         public RocketStatus RocketStatus => rocketStatus;
 
-        private SpriteRenderer spriteRenderer;
+        public event Action<RocketPart> partAdded;
 
-        private void Awake()
+        private void Update()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            if (Input.GetMouseButtonDown(0))
+            {
+                Effects.StartFlight();
+            }
         }
 
-        public event Action<RocketPart> partAdded;
-        
         public void Break()
         {
             rocketStatus = RocketStatus.Break;
-            effects.ActiveBreak(ChangeSprite);
+            Effects.ActiveBreak(ChangeSprite);
         }
 
         private void ChangeSprite()
