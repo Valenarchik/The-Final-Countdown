@@ -55,6 +55,7 @@ namespace CountDown
 
         public void GameOver()
         {
+            ExplosionController.Instance.ActiveExplodes();
             UI.gameObject.SetActive(false);
             StartCoroutine(LoadWinOrLoseSceneDelay(false, -1, loadSceneDelay));
             foreach (var p in Players)
@@ -85,6 +86,7 @@ namespace CountDown
         
         public void WinGame(Player winPlayer)
         {
+            ExplosionController.Instance.ActiveExplodes();
             UI.gameObject.SetActive(false);
             rocket.Effects.StartFlight();
             foreach (var p in Players)
