@@ -10,6 +10,7 @@ public class HelpPanel : MonoBehaviour
     [SerializeField] private GameObject DemonstratingItem;
     [SerializeField] private GameObject DemonstratingDrop;
     [SerializeField] private GameObject DemonstratingRocket;
+    [SerializeField] private GameObject DemonstratingPunch;
     
     private HelpPanelState currentState;
     public HelpPanelState CurrentState => currentState;
@@ -18,11 +19,6 @@ public class HelpPanel : MonoBehaviour
     {
         currentState = HelpPanelState.Hided;
         ReDraw(currentState);
-    }
-
-    private void Update()
-    {
-        //Debug.Log(currentState);
     }
 
     public void ReDraw(HelpPanelState helpPanelState)
@@ -44,6 +40,10 @@ public class HelpPanel : MonoBehaviour
                 ButtonObject.SetActive(true);
                 DemonstratingRocket.SetActive(true);
                 break;
+            case HelpPanelState.DemonstratingPunch:
+                ButtonObject.SetActive(true);
+                DemonstratingPunch.SetActive(true);
+                break;
         }
 
         currentState = helpPanelState;
@@ -55,6 +55,7 @@ public class HelpPanel : MonoBehaviour
         DemonstratingRocket.SetActive(false);
         DemonstratingItem.SetActive(false);
         DemonstratingDrop.SetActive(false);
+        DemonstratingPunch.gameObject.SetActive(false);
     }
 }
 
@@ -63,5 +64,6 @@ public enum HelpPanelState
     Hided,
     DemonstaratingItem,
     DemonstratingDrop,
-    DemonstratingRocket
+    DemonstratingRocket,
+    DemonstratingPunch
 }

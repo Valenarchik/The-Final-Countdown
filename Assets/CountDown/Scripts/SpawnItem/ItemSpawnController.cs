@@ -9,6 +9,10 @@ namespace CountDown
 {
     public class ItemSpawnController : MonoBehaviour
     {
+        private List<Transform> resources = new ();
+        private List<Transform> details = new ();
+        private Transform capsule;
+        
         [Header("SpawnPoints")]
         [SerializeField] private List<Transform> resourceSpawnPoints;
         [SerializeField] private List<Transform> detailSpawnPoints;
@@ -25,6 +29,12 @@ namespace CountDown
         [SerializeField] [Range(0,1f)] private float resourcesSpawnChance;
         [SerializeField] private int detailsCopiesCount;
 
+        public List<Transform> Resources => resources;
+
+        public List<Transform> Details => details;
+
+        public Transform Capsule => capsule;
+
         public void SpawnAllResources()
         {
             foreach (var sp in resourceSpawnPoints)
@@ -38,7 +48,7 @@ namespace CountDown
             if (Random.Range(0, 1f) < resourcesSpawnChance)
             {
                 var resourcePrefab = GetRandomResource();
-                SpawnItem(resourcePrefab, spawnPoint.position);
+                resources.Add(SpawnItem(resourcePrefab, spawnPoint.position));
             }
         }
 
@@ -63,7 +73,7 @@ namespace CountDown
             {
                 var detailSP = GetRandomSpawnPoint(detailSpawnPoints);
                 detailSpawnPoints.Remove(detailSP);
-                SpawnItem(detailPrefab, detailSP.position);
+                details.Add(SpawnItem(detailPrefab, detailSP.position));
             }
         }
 
@@ -72,7 +82,7 @@ namespace CountDown
             if(capsuleSpawnPoints.Count == 0)
                 return;
             var capsuleSP = GetRandomSpawnPoint(capsuleSpawnPoints);
-            SpawnItem(capsulePrefab, capsuleSP.position);
+            capsule = SpawnItem(capsulePrefab, capsuleSP.position);
         }
 
         private Transform GetRandomSpawnPoint(List<Transform> pool)
@@ -82,10 +92,11 @@ namespace CountDown
             return pool[Random.Range(0, pool.Count)];
         }
 
-        private void SpawnItem(GameObject prefab, Vector3 pos)
+        private Transform SpawnItem(GameObject prefab, Vector3 pos)
         {
             var resourceTransform = Instantiate(prefab).transform;
             resourceTransform.position = pos;
+            return resourceTransform;
         }
     }
 }
