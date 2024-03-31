@@ -57,7 +57,7 @@ public class CameraShaker : MonoBehaviour
     [EditorButton]
     public void Shake()
     {
-        Shake(0.5f, 200, 10);
+        Shake(0.5f, 60, 10);
     }
     
     public void Shake(int count)
