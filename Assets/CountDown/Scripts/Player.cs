@@ -86,7 +86,7 @@ namespace CountDown
         {
             fightTrigger.Player = this;
         }
-
+        
         void Update()
         {
             horizontalInput = Input.GetAxis("Horizontal" + inputId) * (inputLocked ? 0 : 1);
@@ -103,6 +103,11 @@ namespace CountDown
                 CheckIntersections();
         }
 
+        public void Fall()
+        {
+            animator.SetTrigger("Fall");
+        }
+        
         private void FixedUpdate()
         {
             var moveVector = new Vector2(horizontalInput, verticalInput);
