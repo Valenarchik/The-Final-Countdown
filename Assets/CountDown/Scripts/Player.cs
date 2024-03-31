@@ -35,12 +35,29 @@ namespace CountDown
         [SerializeField, ReadOnlyInspector] private Item item;
         
         private readonly List<Collider2D> intersectingObjects = new ();
-        
+
+
+        // private Dictionary<string, bool> boolById = new()
+        // {
+        //     {"inputLock", false},
+        //     {"attackCooldown;", false},
+        //     {"movementLocked", false}
+        // };
+        // private Dictionary<string, Coroutine> coroutineById= new()
+        // {
+        //     {"inputLock", null},
+        //     {"attackCooldown;", null},
+        //     {"movementLocked", null}
+        // };
+
         private bool inputLocked;
         private Coroutine inputLockCoroutine;
 
         private bool attackCooldown;
         private Coroutine attackCooldownCoroutine;
+        
+        private bool movementLocked;
+        private Coroutine movementLockCoroutine;
         
         [Header("Events")]
         public UnityEvent<Item> PickUpItemEvent;
@@ -58,7 +75,7 @@ namespace CountDown
             get => score;
             set => score = value;
         }
-        public IReadOnlyCollection<Collider2D> IntersectingObjects => intersectingObjects;
+        public List<Collider2D> IntersectingObjects => intersectingObjects;
         
         private Animator animator;
         private Rigidbody2D rb2D;
@@ -110,12 +127,15 @@ namespace CountDown
         
         private void FixedUpdate()
         {
-            var moveVector = new Vector2(horizontalInput, verticalInput);
-            rb2D.MovePosition(rb2D.position + moveVector * speed + additionalVelocity);
+            if (!movementLocked)
+            {
+                var moveVector = new Vector2(horizontalInput, verticalInput);
+                rb2D.MovePosition(rb2D.position + moveVector * speed + additionalVelocity);
+            }
             ifCantFightImage.enabled = attackCooldown;
         }
 
-        private void DropItem()
+        public void DropItem()
         {
             item.gameObject.SetActive(true);
             var dropItem = item;
@@ -130,7 +150,6 @@ namespace CountDown
             DropItemEvent?.Invoke(dropItem);
             itemAnimator.AnimatePlaceItem(dropItem.transform.position);
             animator.SetBool("HasBox",false);
-            
         }
 
         private void DropItemInRocket(Rocket rocket)
@@ -236,7 +255,7 @@ namespace CountDown
         }
 
         // дублирование кода?
-        private void CooldownAttack(float timeInSeconds)
+        public void CooldownAttack(float timeInSeconds)
         {
             if (attackCooldownCoroutine != null)
                 StopCoroutine(attackCooldownCoroutine);
@@ -250,8 +269,23 @@ namespace CountDown
                 attackCooldownCoroutine = null;
             }
         }
+        
+        public void LockMovement(float timeInSeconds)
+        {
+            if (movementLockCoroutine != null)
+                StopCoroutine(movementLockCoroutine);
+            
+            movementLockCoroutine = StartCoroutine(CooldownACoroutine());
+            IEnumerator CooldownACoroutine()
+            {
+                movementLocked = true;
+                yield return new WaitForSeconds(timeInSeconds);
+                movementLocked = false;
+                movementLockCoroutine = null;
+            }
+        }
 
-        private void LockInput(float timeInSeconds)
+        public void LockInput(float timeInSeconds)
         {
             if (inputLockCoroutine != null)
                 StopCoroutine(inputLockCoroutine);
