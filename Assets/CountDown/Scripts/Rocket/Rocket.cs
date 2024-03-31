@@ -1,4 +1,5 @@
-﻿using AYellowpaper.SerializedCollections;
+﻿using System;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
 
 namespace CountDown
@@ -9,6 +10,8 @@ namespace CountDown
         [SerializeField, ReadOnlyInspector] private RocketStatus rocketStatus;
         public RocketStatus RocketStatus => rocketStatus;
 
+        public event Action<RocketPart> partAdded;
+        
         public void Break()
         {
             rocketStatus = RocketStatus.Break;
@@ -41,6 +44,7 @@ namespace CountDown
             if (item is RocketPart rocketPart)
             {
                 checkList[rocketPart.RocketPartType]--;
+                partAdded?.Invoke(rocketPart);
                 Destroy(item.gameObject);
                 return;
             }
