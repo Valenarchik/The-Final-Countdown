@@ -25,10 +25,10 @@ namespace CountDown
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Effects.StartFlight();
-            }
+            // if (Input.GetMouseButtonDown(0))
+            // {
+            //     Effects.StartFlight();
+            // }
         }
 
         public void Break()

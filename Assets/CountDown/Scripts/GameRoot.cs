@@ -77,6 +77,12 @@ namespace CountDown
             return player == player1 ? 0 : 1;
         }
 
+        [EditorButton]
+        public void WinGame()
+        {
+            WinGame(Player1);
+        }
+        
         public void WinGame(Player winPlayer)
         {
             UI.gameObject.SetActive(false);
@@ -101,7 +107,7 @@ namespace CountDown
         private IEnumerator MoveCameraToPlayer(Player player, Camera camera, float timeInSeconds)
         {
             yield return new WaitForSeconds(timeInSeconds);
-            camera.transform.position = player.transform.position;
+            camera.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, camera.transform.position.z);
         }
 
         private IEnumerator LoadWinOrLoseSceneDelay(bool isWin,int playerId, float timeInSeconds)
