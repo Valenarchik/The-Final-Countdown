@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CountDown
 {
@@ -8,14 +10,25 @@ namespace CountDown
     {
         [SerializeField] private SerializedDictionary<RocketPartType, int> checkList;
         [SerializeField, ReadOnlyInspector] private RocketStatus rocketStatus;
+        [SerializeField] private List<Sprite> stagesSprites;
+
+        private int currentStage;
         public RocketStatus RocketStatus => rocketStatus;
+
+        private SpriteRenderer spriteRenderer;
+
+        private void Awake()
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
 
         public event Action<RocketPart> partAdded;
         
         public void Break()
         {
             rocketStatus = RocketStatus.Break;
-            GetComponent<SpriteRenderer>().color = Color.red;
+            currentStage = 0;
+            spriteRenderer.sprite = stagesSprites[0];
         }
         
         public bool CanPlaceItem(Item item)
@@ -44,10 +57,18 @@ namespace CountDown
             if (item is RocketPart rocketPart)
             {
                 checkList[rocketPart.RocketPartType]--;
+                NextStage();
                 partAdded?.Invoke(rocketPart);
                 Destroy(item.gameObject);
                 return;
             }
+        }
+
+        private void NextStage()
+        {
+            currentStage++;
+            if(currentStage < stagesSprites.Count)
+                spriteRenderer.sprite = stagesSprites[currentStage];
         }
     }
 }
