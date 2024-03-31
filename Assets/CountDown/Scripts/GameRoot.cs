@@ -79,7 +79,7 @@ namespace CountDown
         public void WinGame(Player winPlayer)
         {
             UI.gameObject.SetActive(false);
-            rocket.effects.StartFlight();
+            rocket.Effects.StartFlight();
             foreach (var p in Players)
             {
                 p.LockInput(10000);
