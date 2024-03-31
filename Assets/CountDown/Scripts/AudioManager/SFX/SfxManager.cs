@@ -13,6 +13,8 @@ namespace CountDown
     
         private AudioSource source;
 
+        public AudioSource Source => source;
+
         private void Awake()
         {
             if (Instance == null)

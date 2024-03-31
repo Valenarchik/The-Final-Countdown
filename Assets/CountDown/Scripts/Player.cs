@@ -39,6 +39,11 @@ namespace CountDown
         [Space]
         public Canvas Canvas;
 
+        [Header("Sfx")] 
+        [SerializeField] private SFXData moveSfx;
+        [SerializeField] private SFXData punchSfx;
+        [SerializeField] private SFXData pickUpItemSfx;
+        [SerializeField] private SFXData placeItemSfx;
 
         // private Dictionary<string, bool> boolById = new()
         // {
@@ -119,6 +124,8 @@ namespace CountDown
             animator.SetFloat("Speed",Mathf.Abs(verticalInput)+Mathf.Abs(horizontalInput));
             
             if (inputLocked) return;
+            
+            
             if (Input.GetKeyDown(interactionKey))
                 CheckIntersections();
         }
@@ -213,10 +220,12 @@ namespace CountDown
                 if (rocket != null && rocket.CanPlaceItem(item))
                 {
                     DropItemInRocket(rocket);
+                    SfxManager.Instance.Play(placeItemSfx);
                 }
                 else
                 {
                     DropItem();
+                    SfxManager.Instance.Play(placeItemSfx);
                 }
             }
         }
@@ -232,6 +241,7 @@ namespace CountDown
                     if (pickUpItem != null && CanPickUpConcreteItem(pickUpItem))
                     {
                         PickUpItem(pickUpItem);
+                        SfxManager.Instance.Play(pickUpItemSfx);
                         return true;
                     }
                 }
@@ -256,6 +266,7 @@ namespace CountDown
                     itemDropped.Rb2D.MovePosition(randomVector * dropForce);
                 }
                 CooldownAttack(attackCooldownInSeconds);
+                SfxManager.Instance.Play(punchSfx);
                 return true;
             }
 

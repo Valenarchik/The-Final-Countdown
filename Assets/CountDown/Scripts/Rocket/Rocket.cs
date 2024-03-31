@@ -13,6 +13,8 @@ namespace CountDown
         [SerializeField, ReadOnlyInspector] private RocketStatus rocketStatus;
         [SerializeField] private List<Sprite> stagesSprites;
         [SerializeField] public RocketEffects effects;
+        [Header("Sfx")] 
+        [SerializeField] private SFXData rocketUpgradeSfx;
 
         private int currentStage;
         public RocketStatus RocketStatus => rocketStatus;
