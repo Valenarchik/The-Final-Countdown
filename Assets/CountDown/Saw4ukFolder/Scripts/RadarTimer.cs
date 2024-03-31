@@ -2,13 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using CountDown;
 using UnityEngine;
 
 public class RadarTimer : MonoBehaviour
 {
     [SerializeField] private ResourcesArrow[] resourcesArrow;
-    private int seconds = 15;
+
+    [SerializeField] private float timerOnDetailsModifier;
+    [SerializeField] private float timerOnCapsuleModifier;
+    
+    private float seconds = 15;
     private bool coroutineIsActive = true;
+
+    private ResourceTypeForArrow currentState;
 
     private void Start()
     {
@@ -23,12 +30,28 @@ public class RadarTimer : MonoBehaviour
         }
     }
 
+    public void ChooseDetails()
+    {
+        currentState = ResourceTypeForArrow.Detail;
+        seconds *= timerOnDetailsModifier;
+    }
+
+    public void ChooseCapsule()
+    {
+        currentState = ResourceTypeForArrow.Capsule;
+        seconds *= timerOnCapsuleModifier;
+    }
+    
+    
     private IEnumerator RadarCoroutine()
     {
+        if (resourcesArrow.Length == 0)
+            yield break;
+        
         coroutineIsActive = true;
         foreach (var arrow in resourcesArrow)
         {
-            arrow.Show();
+            arrow.Show(currentState);
         }
         yield return new WaitForSeconds(seconds);
         coroutineIsActive = false;
