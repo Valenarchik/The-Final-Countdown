@@ -28,6 +28,7 @@ namespace CountDown
         
         [Header("References")]
         [SerializeField] private PlayerFightTrigger fightTrigger;
+        [SerializeField] private ItemAnimator itemAnimator;
         
         [Header("Debug")]
         [SerializeField, ReadOnlyInspector] private int score;
@@ -142,6 +143,7 @@ namespace CountDown
             
             intersectingObjects.Add(dropItem.GetComponent<Collider2D>());
             DropItemEvent?.Invoke(dropItem);
+            itemAnimator.AnimatePlaceItem(dropItem.transform.position);
             animator.SetBool("HasBox",false);
         }
 
@@ -167,6 +169,7 @@ namespace CountDown
 
         private void PickUpItem(Item item)
         {
+            var position = item.transform.position;
             this.item = item;
             item.transform.SetParent(transform);
             item.transform.localPosition = Vector3.zero;
@@ -174,6 +177,7 @@ namespace CountDown
             intersectingObjects.Remove(item.GetComponent<Collider2D>());
             speed *= speedOnPickItemMultiplayer;
             PickUpItemEvent?.Invoke(item);
+            itemAnimator.AnimatePickItemUp(position);
             animator.SetBool("HasBox", true);
         }
         
