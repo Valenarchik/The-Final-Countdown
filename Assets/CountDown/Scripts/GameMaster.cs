@@ -61,6 +61,11 @@ namespace CountDown
         private void UpdateTime()
         {
             var deltaTime = Time.fixedDeltaTime / 60 * timeScale;
+            UpdateTime(deltaTime);
+        }
+        
+        private void UpdateTime(float deltaTime)
+        {
             foreach (var gameEvent in gameEvents)
             {
                 gameEvent.TimeInMinutes -= deltaTime;
@@ -78,6 +83,17 @@ namespace CountDown
                     gameEvent.Event?.Invoke();
                     gameEvents.Remove(gameEvent);
                 }
+            }
+        }
+
+        public void ScipCurrentPhase()
+        {
+            var nextEvent = gameEvents
+                .OrderBy(x => x.TimeInMinutes)
+                .FirstOrDefault(x => timeInMinutes < x.TimeInMinutes);
+            if (nextEvent != null)
+            {
+                UpdateTime(nextEvent.TimeInMinutes - TimeInMinutes);
             }
         }
     }
