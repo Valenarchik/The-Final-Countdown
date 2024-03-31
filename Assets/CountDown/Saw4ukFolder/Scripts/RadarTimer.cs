@@ -11,6 +11,7 @@ public class RadarTimer : MonoBehaviour
 
     [SerializeField] private float timerOnDetailsModifier;
     [SerializeField] private float timerOnCapsuleModifier;
+    [SerializeField] private SFXData sound;
     
     private float seconds = 15;
     private bool coroutineIsActive = true;
@@ -55,6 +56,7 @@ public class RadarTimer : MonoBehaviour
         }
         yield return new WaitForSeconds(seconds);
         coroutineIsActive = false;
+        SfxManager.Instance.Play(sound);
     }
 
     private IEnumerator WaitingForFirstTimerCoroutine()
