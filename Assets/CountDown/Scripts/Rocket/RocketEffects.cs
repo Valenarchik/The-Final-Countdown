@@ -8,6 +8,8 @@ namespace CountDown
 {
     public class RocketEffects : MonoBehaviour
     {
+        [SerializeField] private Animator animator;
+        
         [Header("Break")] 
         [SerializeField] private List<ParticleSystem> breakParticles;
         [SerializeField] private float breakDuration = 3f;
