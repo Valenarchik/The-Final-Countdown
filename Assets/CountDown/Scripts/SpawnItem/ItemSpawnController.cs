@@ -62,6 +62,7 @@ namespace CountDown
             foreach (var detail in detailsPrefabs)
             {
                 SpawnDetail(detail);
+                details.Add(detail.transform);
             }
         }
 

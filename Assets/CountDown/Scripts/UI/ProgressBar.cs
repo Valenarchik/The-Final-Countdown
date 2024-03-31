@@ -65,8 +65,6 @@ namespace CountDown
                     var smoothCharge = currentBarLooseScale.x - targetXScale.Value > looseBarChargeThreshold
                         ? looseBarSmoothCharge
                         : 1f;
-                    
-                    Debug.Log(smoothCharge);
 
                     timeLooseBar.localScale = Vector3.Lerp(currentBarLooseScale,
                         new Vector3(targetXScale.Value, currentBarLooseScale.y, currentBarLooseScale.z),

@@ -31,23 +31,19 @@ public class ResourcesArrow : MonoBehaviour
             case ResourceTypeForArrow.Recource:
                 var nearestItemTransform = itemSpawnController.Resources.Where(x => x != null).OrderBy(x => Vector3.Distance(x.position, playerObject.transform.position)).First();
                 arrow.DestinationObject = nearestItemTransform.gameObject;
-                arrowSpriteRenderer.color = new Color32(245,200,0,255);
                 iconSpriteRenderer.sprite = boxSprite;
-                animator.SetTrigger("animate");
                 break;
             case ResourceTypeForArrow.Detail:
                 var nearestDetailTransform = itemSpawnController.Details.Where(x => x != null).OrderBy(x => Vector3.Distance(x.position, playerObject.transform.position)).First();
                 arrow.DestinationObject = nearestDetailTransform.gameObject;
-                arrowSpriteRenderer.color = new Color32(20,30,210,255);
                 iconSpriteRenderer.sprite = detailSprite;
                 break;
             case ResourceTypeForArrow.Capsule:
                 arrow.DestinationObject = itemSpawnController.Capsule.gameObject;
-                arrowSpriteRenderer.color = new Color32(220,5,0,255);
                 iconSpriteRenderer.sprite = capsuleSprite;
                 break;
         }
-        
+        animator.SetTrigger("animate");
     }
     
 }
