@@ -26,7 +26,7 @@ namespace CountDown
                     Gizmos.color = Color.blue;
                     break;
             }
-            Gizmos.DrawSphere(transform.position, 0.3f);
+            Gizmos.DrawSphere(transform.position, 0.2f);
         }
     }
 }

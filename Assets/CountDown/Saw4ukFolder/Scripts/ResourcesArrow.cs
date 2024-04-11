@@ -39,8 +39,12 @@ public class ResourcesArrow : MonoBehaviour
                 iconSpriteRenderer.sprite = detailSprite;
                 break;
             case ResourceTypeForArrow.Capsule:
-                arrow.DestinationObject = itemSpawnController.Capsule.gameObject;
-                iconSpriteRenderer.sprite = capsuleSprite;
+                if (itemSpawnController.Capsule is not null)
+                {
+                    arrow.DestinationObject = itemSpawnController.Capsule.gameObject;
+                    iconSpriteRenderer.sprite = capsuleSprite;
+                }
+
                 break;
         }
         animator.SetTrigger("animate");

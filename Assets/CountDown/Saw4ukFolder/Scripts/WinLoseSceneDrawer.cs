@@ -20,7 +20,8 @@ public class WinLoseSceneDrawer : MonoBehaviour
     private void OnEnable()
     {
         scoreText.text = WinOrLoseScene.Score.ToString();
-        timeText.text = WinOrLoseScene.TimeInMinutes.ToString("0:00");
+        var time = WinOrLoseScene.TimeInMinutes;
+        timeText.text = $"{(int)time}:{(int)(time % 1 * 60f)}";
         
         if (!WinOrLoseScene.IsWin)
         {
