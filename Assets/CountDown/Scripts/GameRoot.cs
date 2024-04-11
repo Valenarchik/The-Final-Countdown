@@ -68,6 +68,8 @@ namespace CountDown
                 playerCamera.enabled = false;
             rocketCamera.enabled = true;
             
+            
+            rocketCamera.GetComponent<FollowPlayer>().SetTarget(rocket.transform);
             rocketCamera.GetComponent<CameraShaker>().Shake(10000);
 
             StartCoroutine(MoveCameraToPlayer(player1, rocketCamera, moveCameraDelay));
@@ -101,16 +103,17 @@ namespace CountDown
             foreach (var playerCamera in PlayerCameras)
                 playerCamera.enabled = false;
             rocketCamera.enabled = true;
+            rocketCamera.GetComponent<FollowPlayer>().SetTarget(rocket.transform);
             rocketCamera.GetComponent<CameraShaker>().Shake(10000);
 
-            StartCoroutine(LoadWinOrLoseSceneDelay(true, GetPlayerId(winPlayer), loadSceneDelay));
             StartCoroutine(MoveCameraToPlayer(GetOtherPlayer(winPlayer), rocketCamera, moveCameraDelay));
+            StartCoroutine(LoadWinOrLoseSceneDelay(true, GetPlayerId(winPlayer), loadSceneDelay));
         }
 
         private IEnumerator MoveCameraToPlayer(Player player, Camera camera, float timeInSeconds)
         {
             yield return new WaitForSeconds(timeInSeconds);
-            camera.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, camera.transform.position.z);
+            camera.GetComponent<FollowPlayer>().SetTarget(player.transform);
         }
 
         private IEnumerator LoadWinOrLoseSceneDelay(bool isWin,int playerId, float timeInSeconds)

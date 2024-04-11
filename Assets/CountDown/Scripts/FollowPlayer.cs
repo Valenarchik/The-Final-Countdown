@@ -18,6 +18,13 @@ namespace CountDown
             zOffset = Vector3.forward * (transform.position - player.position).z;
             transform.position = player.position + zOffset;
         }
+
+        public void SetTarget(Transform newTarget)
+        {
+            player = newTarget;
+            zOffset = Vector3.forward * (transform.position - player.position).z;
+            transform.position = player.position + zOffset;
+        }
         
         void LateUpdate()
         {
