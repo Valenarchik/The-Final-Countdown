@@ -20,7 +20,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b61e2e189e2d9a84f85b28b547546e69, type: 2}
+  m_Motion: {fileID: 7400000, guid: 9d87124386f23fd47a7eaca36892367d, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -32,7 +32,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RadarTimer
+  m_Name: RadarTimer 2
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:

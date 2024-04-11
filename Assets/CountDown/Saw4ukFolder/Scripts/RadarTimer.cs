@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CountDown;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class RadarTimer : MonoBehaviour
 {
@@ -12,15 +13,18 @@ public class RadarTimer : MonoBehaviour
     [SerializeField] private float timerOnDetailsModifier;
     [SerializeField] private float timerOnCapsuleModifier;
     [SerializeField] private SFXData sound;
+    [SerializeField] private Animator animator;
     
-    private float seconds = 15;
+    [SerializeField] private float period = 15;
+    [SerializeField] private float delay;
     private bool coroutineIsActive = true;
 
     private ResourceTypeForArrow currentState;
 
     private void Start()
     {
-        StartCoroutine(WaitingForFirstTimerCoroutine());
+        animator.enabled = false;
+        StartCoroutine(WaitingForDelay());
     }
 
     private void Update()
@@ -34,13 +38,13 @@ public class RadarTimer : MonoBehaviour
     public void ChooseDetails()
     {
         currentState = ResourceTypeForArrow.Detail;
-        seconds *= timerOnDetailsModifier;
+        period *= timerOnDetailsModifier;
     }
 
     public void ChooseCapsule()
     {
         currentState = ResourceTypeForArrow.Capsule;
-        seconds *= timerOnCapsuleModifier;
+        period *= timerOnCapsuleModifier;
     }
     
     
@@ -54,14 +58,21 @@ public class RadarTimer : MonoBehaviour
         {
             arrow.Show(currentState);
         }
-        yield return new WaitForSeconds(seconds);
-        coroutineIsActive = false;
         SfxManager.Instance.Play(sound);
+        yield return new WaitForSeconds(period);
+        coroutineIsActive = false;
+    }
+
+    private IEnumerator WaitingForDelay()
+    {
+        yield return new WaitForSeconds(delay);
+        animator.enabled = true;
+        StartCoroutine(WaitingForFirstTimerCoroutine());
     }
 
     private IEnumerator WaitingForFirstTimerCoroutine()
     {
-        yield return new WaitForSeconds(seconds);
+        yield return new WaitForSeconds(period);
         coroutineIsActive = false;
     }
 }
