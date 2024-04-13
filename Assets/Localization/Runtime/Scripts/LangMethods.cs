@@ -9,33 +9,33 @@ namespace Localization
         {
             bool[] b = new bool[27];
 
-            b[0] = inf.Languages.ru;
-            b[1] = inf.Languages.en;
-            b[2] = inf.Languages.tr;
-            b[3] = inf.Languages.az;
-            b[4] = inf.Languages.be;
-            b[5] = inf.Languages.he;
-            b[6] = inf.Languages.hy;
-            b[7] = inf.Languages.ka;
-            b[8] = inf.Languages.et;
-            b[9] = inf.Languages.fr;
-            b[10] = inf.Languages.kk;
-            b[11] = inf.Languages.ky;
-            b[12] = inf.Languages.lt;
-            b[13] = inf.Languages.lv;
-            b[14] = inf.Languages.ro;
-            b[15] = inf.Languages.tg;
-            b[16] = inf.Languages.tk;
-            b[17] = inf.Languages.uk;
-            b[18] = inf.Languages.uz;
-            b[19] = inf.Languages.es;
-            b[20] = inf.Languages.pt;
-            b[21] = inf.Languages.ar;
-            b[22] = inf.Languages.id;
-            b[23] = inf.Languages.ja;
-            b[24] = inf.Languages.it;
-            b[25] = inf.Languages.de;
-            b[26] = inf.Languages.hi;
+            b[0] = inf.languages.ru;
+            b[1] = inf.languages.en;
+            b[2] = inf.languages.tr;
+            b[3] = inf.languages.az;
+            b[4] = inf.languages.be;
+            b[5] = inf.languages.he;
+            b[6] = inf.languages.hy;
+            b[7] = inf.languages.ka;
+            b[8] = inf.languages.et;
+            b[9] = inf.languages.fr;
+            b[10] = inf.languages.kk;
+            b[11] = inf.languages.ky;
+            b[12] = inf.languages.lt;
+            b[13] = inf.languages.lv;
+            b[14] = inf.languages.ro;
+            b[15] = inf.languages.tg;
+            b[16] = inf.languages.tk;
+            b[17] = inf.languages.uk;
+            b[18] = inf.languages.uz;
+            b[19] = inf.languages.es;
+            b[20] = inf.languages.pt;
+            b[21] = inf.languages.ar;
+            b[22] = inf.languages.id;
+            b[23] = inf.languages.ja;
+            b[24] = inf.languages.it;
+            b[25] = inf.languages.de;
+            b[26] = inf.languages.hi;
 
             return b;
         }
@@ -74,38 +74,43 @@ namespace Localization
                 _ => null
             };
         }
+
+        public static string LangName(LangName langName)
+        {
+            return LangName((int) langName);
+        }
         
         public static TMP_FontAsset[] GetFontTMP(int i, LocalizationSettings inf)
         {
             return i switch
             {
-                0 => inf.Fonts.ru,
-                1 => inf.Fonts.en,
-                2 => inf.Fonts.tr,
-                3 => inf.Fonts.az,
-                4 => inf.Fonts.be,
-                5 => inf.Fonts.he,
-                6 => inf.Fonts.hy,
-                7 => inf.Fonts.ka,
-                8 => inf.Fonts.et,
-                9 => inf.Fonts.fr,
-                10 => inf.Fonts.kk,
-                11 => inf.Fonts.ky,
-                12 => inf.Fonts.lt,
-                13 => inf.Fonts.lv,
-                14 => inf.Fonts.ro,
-                15 => inf.Fonts.tg,
-                16 => inf.Fonts.tk,
-                17 => inf.Fonts.uk,
-                18 => inf.Fonts.uz,
-                19 => inf.Fonts.es,
-                20 => inf.Fonts.pt,
-                21 => inf.Fonts.ar,
-                22 => inf.Fonts.id,
-                23 => inf.Fonts.ja,
-                24 => inf.Fonts.it,
-                25 => inf.Fonts.de,
-                26 => inf.Fonts.hi,
+                0 => inf.fonts.ru,
+                1 => inf.fonts.en,
+                2 => inf.fonts.tr,
+                3 => inf.fonts.az,
+                4 => inf.fonts.be,
+                5 => inf.fonts.he,
+                6 => inf.fonts.hy,
+                7 => inf.fonts.ka,
+                8 => inf.fonts.et,
+                9 => inf.fonts.fr,
+                10 => inf.fonts.kk,
+                11 => inf.fonts.ky,
+                12 => inf.fonts.lt,
+                13 => inf.fonts.lv,
+                14 => inf.fonts.ro,
+                15 => inf.fonts.tg,
+                16 => inf.fonts.tk,
+                17 => inf.fonts.uk,
+                18 => inf.fonts.uz,
+                19 => inf.fonts.es,
+                20 => inf.fonts.pt,
+                21 => inf.fonts.ar,
+                22 => inf.fonts.id,
+                23 => inf.fonts.ja,
+                24 => inf.fonts.it,
+                25 => inf.fonts.de,
+                26 => inf.fonts.hi,
                 _ => null
             };
         }
@@ -114,33 +119,33 @@ namespace Localization
         {
             return i switch
             {
-                0 => inf.FontsSizeCorrect.ru,
-                1 => inf.FontsSizeCorrect.en,
-                2 => inf.FontsSizeCorrect.tr,
-                3 => inf.FontsSizeCorrect.az,
-                4 => inf.FontsSizeCorrect.be,
-                5 => inf.FontsSizeCorrect.he,
-                6 => inf.FontsSizeCorrect.hy,
-                7 => inf.FontsSizeCorrect.ka,
-                8 => inf.FontsSizeCorrect.et,
-                9 => inf.FontsSizeCorrect.fr,
-                10 => inf.FontsSizeCorrect.kk,
-                11 => inf.FontsSizeCorrect.ky,
-                12 => inf.FontsSizeCorrect.lt,
-                13 => inf.FontsSizeCorrect.lv,
-                14 => inf.FontsSizeCorrect.ro,
-                15 => inf.FontsSizeCorrect.tg,
-                16 => inf.FontsSizeCorrect.tk,
-                17 => inf.FontsSizeCorrect.uk,
-                18 => inf.FontsSizeCorrect.uz,
-                19 => inf.FontsSizeCorrect.es,
-                20 => inf.FontsSizeCorrect.pt,
-                21 => inf.FontsSizeCorrect.ar,
-                22 => inf.FontsSizeCorrect.id,
-                23 => inf.FontsSizeCorrect.ja,
-                24 => inf.FontsSizeCorrect.it,
-                25 => inf.FontsSizeCorrect.de,
-                26 => inf.FontsSizeCorrect.hi,
+                0 => inf.fontsSizeCorrect.ru,
+                1 => inf.fontsSizeCorrect.en,
+                2 => inf.fontsSizeCorrect.tr,
+                3 => inf.fontsSizeCorrect.az,
+                4 => inf.fontsSizeCorrect.be,
+                5 => inf.fontsSizeCorrect.he,
+                6 => inf.fontsSizeCorrect.hy,
+                7 => inf.fontsSizeCorrect.ka,
+                8 => inf.fontsSizeCorrect.et,
+                9 => inf.fontsSizeCorrect.fr,
+                10 => inf.fontsSizeCorrect.kk,
+                11 => inf.fontsSizeCorrect.ky,
+                12 => inf.fontsSizeCorrect.lt,
+                13 => inf.fontsSizeCorrect.lv,
+                14 => inf.fontsSizeCorrect.ro,
+                15 => inf.fontsSizeCorrect.tg,
+                16 => inf.fontsSizeCorrect.tk,
+                17 => inf.fontsSizeCorrect.uk,
+                18 => inf.fontsSizeCorrect.uz,
+                19 => inf.fontsSizeCorrect.es,
+                20 => inf.fontsSizeCorrect.pt,
+                21 => inf.fontsSizeCorrect.ar,
+                22 => inf.fontsSizeCorrect.id,
+                23 => inf.fontsSizeCorrect.ja,
+                24 => inf.fontsSizeCorrect.it,
+                25 => inf.fontsSizeCorrect.de,
+                26 => inf.fontsSizeCorrect.hi,
                 _ => null
             };
         }

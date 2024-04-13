@@ -4,18 +4,27 @@ using UnityEngine;
 
 namespace Localization
 {
+    [CreateAssetMenu(menuName = "Localization/Settings", fileName = "LocalizationSettings")]
     public class LocalizationSettings : ScriptableObject
     {
         public bool LocalizationEnable;
+        [Tooltip("Метод перевода. \nAutoLocalization - Автоматический перевод через интернет с помощью Google Translate \nManual - Ручной режим. Вы сами записываете перевод в компоненте LanguageYG \nCSVFile - Перевод с помощью Excel файла.")]
+        public TranslateMethod translateMethod;
         
         [Tooltip("Выберите языки, на которые будет переведена Ваша игра.")]
-        public Languages Languages;
+        public Languages languages;
 
         [Tooltip("Здесь вы можете выбрать одельные шрифты для каждого языка.")]
-        public FontsTMP Fonts;
+        public FontsTMP fonts;
         
         [Tooltip("Вы можете скорректировать размер шрифта для каждого языка. Допустим, для Японского языка вы можете указать -3. В таком случае, если бы базовый размер был бы, например, 10, то для японского языка он бы стал равен 7.")]
-        public FontsSizeCorrect FontsSizeCorrect;
+        public FontsSizeCorrect fontsSizeCorrect;
+
+        [Tooltip("Домен с которого будет скачиваться перевод. Если у вас возникли проблемы с авто-переводом, попробуйте поменять домен.")]
+        public string domainAutoLocalization = "com";
+        
+        [Tooltip("Настройки для метода локализации с помощью CSV файла. Это подразоумивает перевод по ключам всех текстов игры в таблице Excel или Google Sheets.")]
+        public CSVTranslate CSVFileTranslate;
     }
     
     [Serializable]
@@ -113,5 +122,28 @@ namespace Localization
         [Tooltip("ITALIAN")] public int[] it;
         [Tooltip("GERMAN")] public int[] de;
         [Tooltip("HINDI")] public int[] hi;
+    }
+
+    public enum TranslateMethod
+    {
+        AutoLocalization, 
+        Manual,
+        CSVFile
+    }
+
+    public enum FileFormat
+    {
+        GoogleSheets,
+        ExcelOffice
+    };
+    
+    [Serializable]
+    public class CSVTranslate
+    {
+        [Tooltip("Формат scv файла. \nGoogleSheets - Создаст файл с разделительной запятой (,) \nExcelOffice - Создаст файл с разделительной точкой с запятой (;).")]
+        public FileFormat format;
+
+        [Tooltip("Имя CSV файла.")]
+        public string name = "TranslateCSV";
     }
 }

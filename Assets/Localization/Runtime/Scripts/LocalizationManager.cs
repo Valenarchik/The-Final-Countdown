@@ -6,21 +6,36 @@ namespace Localization
     public class LocalizationManager : MonoBehaviour
     {
         public static LocalizationManager Instance { get; private set; }
-        public static LocalizationSettings LocalizationSettings => Instance?.localizationSettings;
-        public static string Lang;
-        
-        [SerializeField] private LocalizationSettings localizationSettings;
-        
-        private void Awake()
+
+        private static string lang;
+        public static string Lang
         {
-            if (Instance == null)
+            get => lang;
+            set
             {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
+                lang = value ?? throw new ArgumentNullException();
+                SwitchLangEvent?.Invoke();
             }
-            else Destroy(this);
         }
 
+        [SerializeField] private LocalizationSettings localizationSettings;
+        public LocalizationSettings Settings => localizationSettings;
+
         public static event Action SwitchLangEvent;
+        private void Awake()
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+        public void SetLanguage(LangName langName)
+        {
+            Lang = LangMethods.LangName(langName);
+        }
+
+        private void OnValidate()
+        {
+            Instance = this;
+        }
     }
 }
