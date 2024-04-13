@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using CountDown;
 using TMPro;
 using UnityEngine;
@@ -13,10 +10,13 @@ public class WinLoseSceneDrawer : MonoBehaviour
     [SerializeField] private GameObject rip1;
     [SerializeField] private GameObject rip2;
 
-    [SerializeField] private TMP_Text winText;
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text timeText;
-
+    
+    [SerializeField] private TMP_Text win0Text;
+    [SerializeField] private TMP_Text win1Text;
+    [SerializeField] private TMP_Text loseText;
+    
     private void OnEnable()
     {
         scoreText.text = WinOrLoseScene.Score.ToString();
@@ -25,7 +25,7 @@ public class WinLoseSceneDrawer : MonoBehaviour
         
         if (!WinOrLoseScene.IsWin)
         {
-            winText.text = "Вы оба проиграли";
+            loseText.gameObject.SetActive(true);
             rip1.gameObject.SetActive(true);
             rip2.gameObject.SetActive(true);
             pers1.gameObject.SetActive(false);
@@ -39,7 +39,8 @@ public class WinLoseSceneDrawer : MonoBehaviour
                 rip2.gameObject.SetActive(true);
                 pers1.gameObject.SetActive(true);
                 pers2.gameObject.SetActive(false);
-                winText.text = "Победил игрок слева";
+
+                win0Text.gameObject.SetActive(true);
             }
             else if (WinOrLoseScene.PlayerId == 1)
             {
@@ -47,7 +48,8 @@ public class WinLoseSceneDrawer : MonoBehaviour
                 rip2.gameObject.SetActive(false);
                 pers1.gameObject.SetActive(false);
                 pers2.gameObject.SetActive(true);
-                winText.text = "Победил игрок справа";
+                
+                win1Text.gameObject.SetActive(true);
             }
         }
     }

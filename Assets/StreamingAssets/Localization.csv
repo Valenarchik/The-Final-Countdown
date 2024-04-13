@@ -1,0 +1,7 @@
+Language;Русский;English
+WinOrLose_Score;Счет:;Score:
+WinOrLose_Title;Счет;Score
+WinOrLose_Time;Время:;Time: 
+WinOrLose_LoseDesc;Вы оба проиграли;
+WinOrLose_Win1Desc;Победил игрок слева;
+WinOrLose_Win2Desc;Победил игрок справа;

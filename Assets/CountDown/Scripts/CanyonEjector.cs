@@ -6,12 +6,12 @@ namespace CountDown
 {
     public class CanyonEjector: MonoBehaviour
     {
-        private CompositeCollider2D collider2D;
+        private CompositeCollider2D _collider2D;
         private bool coroutineStarted;
 
         private void Awake()
         {
-            collider2D = GetComponent<CompositeCollider2D>();
+            _collider2D = GetComponent<CompositeCollider2D>();
         }
 
         private void OnTriggerStay2D(Collider2D other)
@@ -22,7 +22,7 @@ namespace CountDown
             if (coroutineStarted)
                 return;
             
-            if (collider2D.OverlapPoint(player.transform.position))
+            if (_collider2D.OverlapPoint(player.transform.position))
             {
                 if (player.Item != null)
                 {
