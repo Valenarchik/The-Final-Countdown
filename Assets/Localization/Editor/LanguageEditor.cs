@@ -7,10 +7,10 @@ using TMPro;
 
 namespace Localization
 {
-    [CustomEditor(typeof(Language))]
-    public class LanguageYGEditor : Editor
+    [CustomEditor(typeof(LanguageText))]
+    public class LanguageEditor : Editor
     {
-        Language scr;
+        LanguageText scr;
 
         GUIStyle red;
         GUIStyle green;
@@ -19,7 +19,7 @@ namespace Localization
 
         private void OnEnable()
         {
-            scr = (Language)target;
+            scr = (LanguageText)target;
             scr.Serialize();
         }
 
@@ -27,7 +27,7 @@ namespace Localization
         {
             serializedObject.Update();
 
-            scr = (Language)target;
+            scr = (LanguageText)target;
             Undo.RecordObject(scr, "Undo LanguageYG");
 
             red = new GUIStyle(EditorStyles.label);
@@ -47,9 +47,9 @@ namespace Localization
                 return;
             }
 
-            if (scr.settings)
+            if (scr.Settings)
             {
-                if (scr.settings.translateMethod == TranslateMethod.CSVFile)
+                if (scr.Settings.translateMethod == TranslateMethod.CSVFile)
                 {
                     GUILayout.BeginVertical("HelpBox");
 
@@ -103,7 +103,7 @@ namespace Localization
                     }
                     if (GUILayout.Button("Export"))
                     {
-                        CSVManager.SetIDLineFile(scr.settings, scr);
+                        CSVManager.SetIDLineFile(scr.Settings, scr);
                     }
 
                     GUILayout.EndHorizontal();
@@ -114,7 +114,7 @@ namespace Localization
                 }
                 else
                 {
-                    if (scr.settings.translateMethod == TranslateMethod.AutoLocalization)
+                    if (scr.Settings.translateMethod == TranslateMethod.AutoLocalization)
                     {
                         GUILayout.BeginVertical("HelpBox");
 
@@ -199,7 +199,7 @@ namespace Localization
 
                     bool labelProcess = false;
 
-                    if (scr.settings.translateMethod == TranslateMethod.AutoLocalization)
+                    if (scr.Settings.translateMethod == TranslateMethod.AutoLocalization)
                     {
                         if (scr.processTranslateLabel != "")
                         {
@@ -274,20 +274,20 @@ namespace Localization
         
         void FontTMPSettingsDraw()
         {
-            if (scr.settings.fonts.defaultFont.Length == 0)
+            if (scr.Settings.fonts.defaultFont.Length == 0)
                 return;
 
-            scr.fontNumber = Mathf.Clamp(scr.fontNumber, 0, scr.settings.fonts.defaultFont.Length - 1);
-            if (scr.settings.fonts.defaultFont.Length > 1)
+            scr.fontNumber = Mathf.Clamp(scr.fontNumber, 0, scr.Settings.fonts.defaultFont.Length - 1);
+            if (scr.Settings.fonts.defaultFont.Length > 1)
                 scr.fontNumber = EditorGUILayout.IntField("Font Index (in array default fonts)", scr.fontNumber);
 
-            if (scr.textMPComponent.font == scr.settings.fonts.defaultFont[scr.fontNumber])
+            if (scr.textMPComponent.font == scr.Settings.fonts.defaultFont[scr.fontNumber])
                 return;
 
             if (GUILayout.Button(buttonText_ReplaseFont))
             {
                 Undo.RecordObject(scr.textMPComponent, "Undo TextMPComponent.font");
-                scr.textMPComponent.font = scr.settings.fonts.defaultFont[scr.fontNumber];
+                scr.textMPComponent.font = scr.Settings.fonts.defaultFont[scr.fontNumber];
             }
         }
 
@@ -300,7 +300,7 @@ namespace Localization
         void UpdateLanguages(bool CSVFile)
         {
             processTranslateLabel = 0;
-            bool[] langArr = LangMethods.LangArr(scr.settings);
+            bool[] langArr = LangMethods.LangArr(scr.Settings);
 
             for (int i = 0; i < langArr.Length; i++)
             {
@@ -309,92 +309,92 @@ namespace Localization
                     processTranslateLabel++;
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(new GUIContent(LangMethods.LangName(i), CSVManager.FullNameLanguages()[i]), GUILayout.Width(20), GUILayout.Height(20));
-
+                    
                     switch (i)
                     {
                         case 0:
-                            scr.ru = EditorGUILayout.TextArea(scr.ru, GUILayout.Height(scr.textHeight));
+                            scr.ru = EditorGUILayout.TextArea(scr.ru, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 1:
-                            scr.en = EditorGUILayout.TextArea(scr.en, GUILayout.Height(scr.textHeight));
+                            scr.en = EditorGUILayout.TextArea(scr.en, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 2:
-                            scr.tr = EditorGUILayout.TextArea(scr.tr, GUILayout.Height(scr.textHeight));
+                            scr.tr = EditorGUILayout.TextArea(scr.tr, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 3:
-                            scr.az = EditorGUILayout.TextArea(scr.az, GUILayout.Height(scr.textHeight));
+                            scr.az = EditorGUILayout.TextArea(scr.az, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 4:
-                            scr.be = EditorGUILayout.TextArea(scr.be, GUILayout.Height(scr.textHeight));
+                            scr.be = EditorGUILayout.TextArea(scr.be, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 5:
-                            scr.he = EditorGUILayout.TextArea(scr.he, GUILayout.Height(scr.textHeight));
+                            scr.he = EditorGUILayout.TextArea(scr.he, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 6:
-                            scr.hy = EditorGUILayout.TextArea(scr.hy, GUILayout.Height(scr.textHeight));
+                            scr.hy = EditorGUILayout.TextArea(scr.hy, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 7:
-                            scr.ka = EditorGUILayout.TextArea(scr.ka, GUILayout.Height(scr.textHeight));
+                            scr.ka = EditorGUILayout.TextArea(scr.ka, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 8:
-                            scr.et = EditorGUILayout.TextArea(scr.et, GUILayout.Height(scr.textHeight));
+                            scr.et = EditorGUILayout.TextArea(scr.et, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 9:
-                            scr.fr = EditorGUILayout.TextArea(scr.fr, GUILayout.Height(scr.textHeight));
+                            scr.fr = EditorGUILayout.TextArea(scr.fr, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 10:
-                            scr.kk = EditorGUILayout.TextArea(scr.kk, GUILayout.Height(scr.textHeight));
+                            scr.kk = EditorGUILayout.TextArea(scr.kk, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 11:
-                            scr.ky = EditorGUILayout.TextArea(scr.ky, GUILayout.Height(scr.textHeight));
+                            scr.ky = EditorGUILayout.TextArea(scr.ky, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 12:
-                            scr.lt = EditorGUILayout.TextArea(scr.lt, GUILayout.Height(scr.textHeight));
+                            scr.lt = EditorGUILayout.TextArea(scr.lt, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 13:
-                            scr.lv = EditorGUILayout.TextArea(scr.lv, GUILayout.Height(scr.textHeight));
+                            scr.lv = EditorGUILayout.TextArea(scr.lv, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 14:
-                            scr.ro = EditorGUILayout.TextArea(scr.ro, GUILayout.Height(scr.textHeight));
+                            scr.ro = EditorGUILayout.TextArea(scr.ro, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 15:
-                            scr.tg = EditorGUILayout.TextArea(scr.tg, GUILayout.Height(scr.textHeight));
+                            scr.tg = EditorGUILayout.TextArea(scr.tg, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 16:
-                            scr.tk = EditorGUILayout.TextArea(scr.tk, GUILayout.Height(scr.textHeight));
+                            scr.tk = EditorGUILayout.TextArea(scr.tk, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 17:
-                            scr.uk = EditorGUILayout.TextArea(scr.uk, GUILayout.Height(scr.textHeight));
+                            scr.uk = EditorGUILayout.TextArea(scr.uk, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 18:
-                            scr.uz = EditorGUILayout.TextArea(scr.uz, GUILayout.Height(scr.textHeight));
+                            scr.uz = EditorGUILayout.TextArea(scr.uz, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 19:
-                            scr.es = EditorGUILayout.TextArea(scr.es, GUILayout.Height(scr.textHeight));
+                            scr.es = EditorGUILayout.TextArea(scr.es, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 20:
-                            scr.pt = EditorGUILayout.TextArea(scr.pt, GUILayout.Height(scr.textHeight));
+                            scr.pt = EditorGUILayout.TextArea(scr.pt, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 21:
-                            scr.ar = EditorGUILayout.TextArea(scr.ar, GUILayout.Height(scr.textHeight));
+                            scr.ar = EditorGUILayout.TextArea(scr.ar, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 22:
-                            scr.id = EditorGUILayout.TextArea(scr.id, GUILayout.Height(scr.textHeight));
+                            scr.id = EditorGUILayout.TextArea(scr.id, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 23:
-                            scr.ja = EditorGUILayout.TextArea(scr.ja, GUILayout.Height(scr.textHeight));
+                            scr.ja = EditorGUILayout.TextArea(scr.ja, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 24:
-                            scr.it = EditorGUILayout.TextArea(scr.it, GUILayout.Height(scr.textHeight));
+                            scr.it = EditorGUILayout.TextArea(scr.it, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 25:
-                            scr.de = EditorGUILayout.TextArea(scr.de, GUILayout.Height(scr.textHeight));
+                            scr.de = EditorGUILayout.TextArea(scr.de, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                         case 26:
-                            scr.hi = EditorGUILayout.TextArea(scr.hi, GUILayout.Height(scr.textHeight));
+                            scr.hi = EditorGUILayout.TextArea(scr.hi, EditorStyles.textArea, GUILayout.Height(scr.textHeight));
                             break;
                     }
-
+                    
                     GUILayout.EndHorizontal();
                 }
             }

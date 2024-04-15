@@ -10,9 +10,9 @@ namespace Localization
         public static readonly string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
 
         // Чтение CSV файла. Поиск переводов по ключу
-        public static string[] ImportTransfersByKey(Language lang)
+        public static string[] ImportTransfersByKey(LanguageText lang)
         {
-            TextAsset data = Resources.Load(lang.settings.CSVFileTranslate.name) as TextAsset;
+            TextAsset data = Resources.Load(lang.Settings.CSVFileTranslate.name) as TextAsset;
 
             string[] keys = Regex.Split(CommaFormat(data.text), LINE_SPLIT_RE);
             string[] result = new string[lang.languages.Length];
@@ -27,7 +27,7 @@ namespace Localization
                 {
                     for (int i2 = 0; i2 < lang.languages.Length; i2++)
                     {
-                        if (LangMethods.LangArr(lang.settings)[i2])
+                        if (LangMethods.LangArr(lang.Settings)[i2])
                         {
                             result[i2] = translates[i2 + 1].Replace("*", ",").Replace(@"\n", "\n");
                             complete = true;
@@ -119,7 +119,7 @@ namespace Localization
 
 
         // Запись одного текста
-        public static void SetIDLineFile(LocalizationSettings settings, Language locObj)
+        public static void SetIDLineFile(LocalizationSettings settings, LanguageText locObj)
         {
             if (!File.Exists(Patch(settings))) // Eсли файла нет
             {
@@ -220,7 +220,7 @@ namespace Localization
                 stream.Write(data, Patch(infoYG));
         }
 
-        public static string GetKeyForLangYG(Language lang)
+        public static string GetKeyForLangYG(LanguageText lang)
         {
             string key = null;
 
@@ -269,10 +269,7 @@ namespace Localization
 
         static string RedLineFormat(string line)
         {
-            if (line.Length > 0)
-                return line.Replace("\n", @"\n");
-            else
-                return "";
+            return string.IsNullOrEmpty(line) ? "" : line.Replace("\n", @"\n");
         }
 
         public static string[] FullNameLanguages()

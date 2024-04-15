@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -7,6 +8,7 @@ namespace Localization
 {
     public class TranslationTableEditorWindow : EditorWindow
     {
+        private bool enabled;
         public static void ShowWindow()
         {
             GetWindow<TranslationTableEditorWindow>("Translation Table");
@@ -14,26 +16,43 @@ namespace Localization
 
         Vector2 scrollPosition = Vector2.zero;
 
+        private void OnEnable()
+        {
+            enabled = true;
+            TextAsset data = Resources.Load(LocalizationManager.Settings.CSVFileTranslate.name) as TextAsset;
+            if (data == null)
+            {
+                Debug.LogError("CSV file was not found!");
+                enabled = false;
+            }
+        }
+
+        private void OnDisable()
+        {
+            enabled = false;
+        }
+
         private void OnGUI()
         {
-            scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
-
+            if (!enabled) return;
+            
             int countSelectObj = 0;
 
             foreach (GameObject obj in Selection.gameObjects)
             {
                 countSelectObj++;
-                var langYG = obj.GetComponent<Language>();
+                var lang = obj.GetComponent<LanguageText>();
 
-                if (langYG)
+                if (lang)
                 {
-                    TextAsset data = Resources.Load(langYG.settings.CSVFileTranslate.name) as TextAsset;
-                    string[] lines = Regex.Split(CSVManager.CommaFormat(data.text), "\n");
+                    var data = Resources.Load(lang.Settings.CSVFileTranslate.name) as TextAsset;
+                    var lines = Regex.Split(CSVManager.CommaFormat(data.text), "\n");
 
+                    scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(position.width), GUILayout.Height(position.height));
                     GUILayout.BeginHorizontal();
-                    string[] keys = Regex.Split(lines[0], ",");
+                    var keys = Regex.Split(lines[0], ",");
 
-                    for (int i = 0; i < keys.Length; i++)
+                    for (var i = 0; i < keys.Length; i++)
                     {
                         GUILayout.BeginVertical("Box");
                         if (i == 0) GUILayout.Label(keys[i].Replace("*", ",").Replace(@"\n", "\n"), GUILayout.Width(108), GUILayout.Height(15));
@@ -44,7 +63,7 @@ namespace Localization
 
                     for (int i = 1; i < lines.Length - 1; i++)
                     {
-                        DrawLine(lines[i], langYG);
+                        DrawLine(lines[i], lang);
                     }
                 }
                 else
@@ -61,7 +80,7 @@ namespace Localization
             GUILayout.EndScrollView();
         }
 
-        void DrawLine(string line, Language lang)
+        void DrawLine(string line, LanguageText lang)
         {
             GUILayout.BeginHorizontal();
 

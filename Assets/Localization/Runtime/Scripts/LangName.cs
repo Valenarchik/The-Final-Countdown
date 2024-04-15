@@ -28,6 +28,6 @@
         ja,
         it,
         de,
-        hi,
+        hi
     }
 }

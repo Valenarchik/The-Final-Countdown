@@ -24,7 +24,7 @@ namespace Localization
             {
                 objectsTranlate.Clear();
 
-                foreach (Language obj in SceneAsset.FindObjectsByType<Language>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                foreach (LanguageText obj in SceneAsset.FindObjectsByType<LanguageText>(FindObjectsInactive.Include, FindObjectsSortMode.None))
                 {
                     objectsTranlate.Add(obj.gameObject);
                 }
@@ -36,7 +36,7 @@ namespace Localization
             {
                 foreach (GameObject obj in Selection.gameObjects)
                 {
-                    if (obj.GetComponent<Language>())
+                    if (obj.GetComponent<LanguageText>())
                     {
                         bool check = false;
                         for (int i = 0; i < objectsTranlate.Count; i++)
@@ -77,12 +77,12 @@ namespace Localization
 
                     foreach (var obj in objectsTranlate)
                     {
-                        var scr = obj.GetComponent<Language>();
+                        var scr = obj.GetComponent<LanguageText>();
 
-                        if (scr.settings.fonts.defaultFont.Length >= scr.fontNumber + 1 && scr.settings.fonts.defaultFont[scr.fontNumber])
+                        if (scr.Settings.fonts.defaultFont.Length >= scr.fontNumber + 1 && scr.Settings.fonts.defaultFont[scr.fontNumber])
                         { 
                             if (scr.textMPComponent)
-                                scr.ChangeFont(scr.settings.fonts.defaultFont);
+                                scr.ChangeFont(scr.Settings.fonts.defaultFont);
                             completeObjCoint++;
                         }
                         else

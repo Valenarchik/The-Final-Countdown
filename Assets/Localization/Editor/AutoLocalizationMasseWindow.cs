@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -17,10 +18,15 @@ namespace Localization
 
         Vector2 scrollPosition = Vector2.zero;
         List<GameObject> objectsTranlate = new List<GameObject>();
+        private LocalizationSettings settings;
+        private void OnEnable()
+        {
+            settings = SettingsLoader.LoadSettings();
+        }
 
         private void OnGUI()
         {
-            if (GameObject.FindAnyObjectByType<LocalizationManager>().Settings.translateMethod == TranslateMethod.AutoLocalization)
+            if (settings.translateMethod == TranslateMethod.AutoLocalization)
             {
                 GUILayout.Space(10);
                 
@@ -34,11 +40,11 @@ namespace Localization
                     }
                 }
                 
-                if (GUILayout.Button($"Search for all objects on the scene by type {nameof(Language)}", GUILayout.Height(30)))
+                if (GUILayout.Button($"Search for all objects on the scene by type {nameof(LanguageText)}", GUILayout.Height(30)))
                 {
                     objectsTranlate.Clear();
 
-                    foreach (var obj in FindObjectsByType<Language>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                    foreach (var obj in FindObjectsByType<LanguageText>(FindObjectsInactive.Include, FindObjectsSortMode.None))
                     {
                         objectsTranlate.Add(obj.gameObject);
                     }
@@ -89,10 +95,10 @@ namespace Localization
                     {
                         foreach (GameObject obj in objectsTranlate)
                         {
-                            Language scrAL = obj.GetComponent<Language>();
+                            LanguageText scrAL = obj.GetComponent<LanguageText>();
 
                             if (scrAL == null)
-                                scrAL = obj.AddComponent<Language>();
+                                scrAL = obj.AddComponent<LanguageText>();
 
                             scrAL.Serialize();
                             scrAL.componentTextField = true;
@@ -102,22 +108,22 @@ namespace Localization
 
                     GUILayout.BeginHorizontal();
 
-                    if (GUILayout.Button($"Remove component {nameof(Language)}", GUILayout.Height(22)))
+                    if (GUILayout.Button($"Remove component {nameof(LanguageText)}", GUILayout.Height(22)))
                     {
                         foreach (GameObject obj in objectsTranlate)
                         {
-                            Language scrAL = obj.GetComponent<Language>();
+                            LanguageText scrAL = obj.GetComponent<LanguageText>();
 
                             if (scrAL)
                                 DestroyImmediate(scrAL);
                         }
                     }
 
-                    if (GUILayout.Button($"Reserialize {nameof(Language)} components", GUILayout.Height(22)))
+                    if (GUILayout.Button($"Reserialize {nameof(LanguageText)} components", GUILayout.Height(22)))
                     {
                         foreach (GameObject obj in objectsTranlate)
                         {
-                            Language scrAL = obj.GetComponent<Language>();
+                            LanguageText scrAL = obj.GetComponent<LanguageText>();
 
                             if (scrAL)
                                 scrAL.Serialize();

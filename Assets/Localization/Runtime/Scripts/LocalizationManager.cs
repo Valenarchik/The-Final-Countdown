@@ -5,9 +5,8 @@ namespace Localization
 {
     public class LocalizationManager : MonoBehaviour
     {
-        public static LocalizationManager Instance { get; private set; }
-
-        private static string lang;
+        private static LocalizationManager Instance;
+        public static string lang;
         public static string Lang
         {
             get => lang;
@@ -18,17 +17,22 @@ namespace Localization
             }
         }
 
-        [SerializeField] private LocalizationSettings localizationSettings;
-        public LocalizationSettings Settings => localizationSettings;
+        public LocalizationSettings settings;
+        public static LocalizationSettings Settings => Instance?.settings;
 
         public static event Action SwitchLangEvent;
         private void Awake()
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Instance != null && Instance != this)
+                Destroy(this);
+            else
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
         }
 
-        public void SetLanguage(LangName langName)
+        public static void SetLanguage(LangName langName)
         {
             Lang = LangMethods.LangName(langName);
         }

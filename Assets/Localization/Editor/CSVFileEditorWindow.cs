@@ -24,7 +24,7 @@ namespace Localization
             {
                 objectsTranlate.Clear();
 
-                foreach (Language obj in SceneAsset.FindObjectsByType<Language>(FindObjectsSortMode.None))
+                foreach (LanguageText obj in SceneAsset.FindObjectsByType<LanguageText>(FindObjectsSortMode.None))
                 {
                     objectsTranlate.Add(obj.gameObject);
                 }
@@ -36,7 +36,7 @@ namespace Localization
             {
                 foreach (GameObject obj in Selection.gameObjects)
                 {
-                    if (obj.GetComponent<Language>())
+                    if (obj.GetComponent<LanguageText>())
                     {
                         bool check = false;
                         for (int i = 0; i < objectsTranlate.Count; i++)
@@ -78,7 +78,7 @@ namespace Localization
 
                     for (int i = 0; i < objectsTranlate.Count; i++)
                     {
-                        Language scr = objectsTranlate[i].GetComponent<Language>();
+                        LanguageText scr = objectsTranlate[i].GetComponent<LanguageText>();
 
                         if (CSVManager.GetKeyForLangYG(scr) == null || CSVManager.GetKeyForLangYG(scr) == "")
                         {
@@ -100,11 +100,11 @@ namespace Localization
 
                 if (GUILayout.Button("Export", GUILayout.Height(30)))
                 {
-                    var langObj = new List<Language>();
+                    var langObj = new List<LanguageText>();
 
                     for (int i = 0; i < objectsTranlate.Count; i++)
                     {
-                        var scr = objectsTranlate[i].GetComponent<Language>();
+                        var scr = objectsTranlate[i].GetComponent<LanguageText>();
                         string textScr = null;
 
                         if (scr.componentTextField)
@@ -133,7 +133,7 @@ namespace Localization
                         }
 
                         bool clon = false;
-                        foreach (Language l in langObj)
+                        foreach (LanguageText l in langObj)
                         {
                             if (l != null)
                             {
@@ -156,7 +156,7 @@ namespace Localization
 
                     if (langObj.Count > 0)
                     {
-                        var info = langObj[0].settings;
+                        var info = langObj[0].Settings;
 
                         string[,] keys = new string[langObj.Count, LangMethods.LangArr(info).Length + 1];
 

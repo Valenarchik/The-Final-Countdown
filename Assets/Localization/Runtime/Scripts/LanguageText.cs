@@ -9,10 +9,19 @@ using UnityEngine.Networking;
 
 namespace Localization
 {
-    public class Language : MonoBehaviour
+    public class LanguageText : MonoBehaviour
     {
-        public LocalizationSettings settings => LocalizationManager.Instance.Settings;
-        
+        [SerializeField, HideInInspector] private LocalizationSettings settings;
+        public LocalizationSettings Settings
+        {
+            get
+            {
+                if (settings == null)
+                    settings = SettingsLoader.LoadSettings();
+                return settings;
+            }
+        }
+
         [SerializeField] public TMP_Text textMPComponent;
         [SerializeField] public TMP_FontAsset uniqueFontTMP;
         
@@ -26,10 +35,8 @@ namespace Localization
 
         private void Awake()
         {
-            // Uncomment the bottom line if you get any errors related to infoYG. In some cases, it may help.
-            //Serialize();
             if (textMPComponent)
-                baseFontSize = Mathf.RoundToInt(textMPComponent.fontSize);
+                baseFontSize = Mathf.RoundToInt(textMPComponent.fontSize); 
         }
 
         [ContextMenu("Reserialize")]
@@ -47,7 +54,7 @@ namespace Localization
 
         public void SwitchLanguage(string lang)
         {
-            if (!settings.LocalizationEnable)
+            if (!Settings.LocalizationEnable)
                 return;
             
             for (int i = 0; i < languages.Length; i++)
@@ -57,16 +64,16 @@ namespace Localization
                     if (!changeOnlyFont)
                         AssignTranslate(languages[i]);
                     if (textMPComponent)
-                        ChangeFont(LangMethods.GetFontTMP(i, settings));
+                        ChangeFont(LangMethods.GetFontTMP(i, Settings));
 
-                    FontSizeCorrect(LangMethods.GetFontSize(i, settings));
+                    FontSizeCorrect(LangMethods.GetFontSize(i, Settings));
                 }
             }
         }
 
         public void SwitchLanguage()
         {
-            if (settings.LocalizationEnable)
+            if (Settings.LocalizationEnable)
                 SwitchLanguage(LocalizationManager.Lang);
         }
 
@@ -92,13 +99,13 @@ namespace Localization
             }
             else if (font == null)
             {
-                if (settings.fonts.defaultFont.Length >= fontNumber + 1 && settings.fonts.defaultFont[fontNumber])
+                if (Settings.fonts.defaultFont.Length >= fontNumber + 1 && Settings.fonts.defaultFont[fontNumber])
                 {
-                    font = settings.fonts.defaultFont[fontNumber];
+                    font = Settings.fonts.defaultFont[fontNumber];
                 }
-                else if (settings.fonts.defaultFont.Length >= 1 && settings.fonts.defaultFont[0])
+                else if (Settings.fonts.defaultFont.Length >= 1 && Settings.fonts.defaultFont[0])
                 {
-                    font = settings.fonts.defaultFont[0];
+                    font = Settings.fonts.defaultFont[0];
                 }
             }
 
@@ -225,7 +232,7 @@ namespace Localization
                 return null;
             }
 
-            var url = String.Format("https://translate.google." + settings.domainAutoLocalization + "/translate_a/single?client=gtx&dt=t&sl={0}&tl={1}&q={2}",
+            var url = String.Format("https://translate.google." + Settings.domainAutoLocalization + "/translate_a/single?client=gtx&dt=t&sl={0}&tl={1}&q={2}",
                 "auto", translationTo, WebUtility.UrlEncode(text));
             var www = UnityWebRequest.Get(url);
             www.SendWebRequest();
@@ -253,6 +260,7 @@ namespace Localization
         }
 
         [HideInInspector] public int countLang = 0;
+
         IEnumerator TranslateEmptyFields(int countLangAvailable)
         {
             countLang = 0;
@@ -260,7 +268,7 @@ namespace Localization
 
             for (int i = 0; i < languages.Length; i++)
             {
-                if (LangMethods.LangArr(settings)[i] && (languages[i] == null || languages[i] == ""))
+                if (LangMethods.LangArr(Settings)[i] && (languages[i] == null || languages[i] == ""))
                 {
                     bool complete = false;
                     string translate = TranslateGoogle(LangMethods.LangName(i));
@@ -295,7 +303,7 @@ namespace Localization
 
             for (int i = 0; i < languages.Length; i++)
             {
-                if (LangMethods.LangArr(settings)[i] && (languages[i] == null || languages[i] == ""))
+                if (LangMethods.LangArr(Settings)[i] && (languages[i] == null || languages[i] == ""))
                 {
                     string translate = TranslateGoogle(LangMethods.LangName(i));
 

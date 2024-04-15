@@ -14,11 +14,9 @@ namespace CountDown.Saw4ukFolder.Scripts
 
         public UnityEvent textWritten;
 
-        private void Awake()
+        private void Start()
         {
-            var test = textField.text;
-            textField.text = "";
-            WriteText(test);
+            WriteText(textField.text);
         }
 
         public void WriteText(string text)
