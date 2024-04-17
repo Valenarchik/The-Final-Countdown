@@ -1,11 +1,9 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using System.Net;
-//using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using TMPro;
-using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEngine.Networking;
 
 namespace Localization
