@@ -17,6 +17,12 @@ namespace Localization
             }
         }
 
+        public static LangName LangName
+        {
+            get => Enum.Parse<LangName>(lang);
+            set => SetLanguage(value);
+        }
+
         public LocalizationSettings settings;
         public static LocalizationSettings Settings => Instance?.settings;
 
@@ -32,7 +38,7 @@ namespace Localization
             }
         }
 
-        public static void SetLanguage(LangName langName)
+        private static void SetLanguage(LangName langName)
         {
             Lang = LangMethods.LangName(langName);
         }

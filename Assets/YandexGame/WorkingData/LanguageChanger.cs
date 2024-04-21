@@ -27,18 +27,18 @@ public class LanguageChanger : MonoBehaviour
     [EditorButton]
     public void RU()
     {
-        LocalizationManager.SetLanguage(LangName.ru);
+        LocalizationManager.LangName = LangName.ru;
     }
 
     [EditorButton]
     private void EN()
     {
-        LocalizationManager.SetLanguage(LangName.en);
+        LocalizationManager.LangName = LangName.en;
     }
     
     [EditorButton]
     private void TR()
     {
-        LocalizationManager.SetLanguage(LangName.tr);
+        LocalizationManager.LangName = LangName.tr;
     }
 }

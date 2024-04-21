@@ -110,7 +110,7 @@ namespace Localization
                     GUILayout.EndVertical();
 
                     scr.textHeight = EditorGUILayout.Slider("Text Height", scr.textHeight, 20f, 400f);
-                    UpdateLanguages(true);
+                    UpdateLanguages();
                 }
                 else
                 {
@@ -246,7 +246,7 @@ namespace Localization
 
                     GUILayout.EndHorizontal();
 
-                    UpdateLanguages(false);
+                    UpdateLanguages();
                     GUILayout.EndVertical();
                 }
             }
@@ -297,7 +297,7 @@ namespace Localization
             scr.Translate(processTranslateLabel);
         }
 
-        void UpdateLanguages(bool CSVFile)
+        void UpdateLanguages()
         {
             processTranslateLabel = 0;
             bool[] langArr = LangMethods.LangArr(scr.Settings);
